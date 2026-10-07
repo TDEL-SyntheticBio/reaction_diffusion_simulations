@@ -1,0 +1,3 @@
+protocol,bi,t,seeds,n_mean,hole,peak1_r,peak1_g,trough_r,trough_g,peak2_r,peak2_g
+nucleation,12,50,0,0,nan,nan,nan,nan,nan,nan,nan
+nucleation,12,500,0,0,nan,nan,nan,nan,nan,nan,nan

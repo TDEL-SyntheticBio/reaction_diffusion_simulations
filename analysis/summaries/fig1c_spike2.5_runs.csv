@@ -1,0 +1,4 @@
+panel,protocol,bi,seed,steps_used,a_ss,i_ss,final_a_max,wall_s,file
+fig1c,nucleation,12,1,50001,2.5,2.5,5.9234211872725435,96.1,nucleation_bi12_seed1.npz
+fig1c,nucleation,12,2,50001,2.5,2.5,6.679791313673012,95.6,nucleation_bi12_seed2.npz
+fig1c,nucleation,12,3,50001,2.5,2.5,6.032713628871684,94.8,nucleation_bi12_seed3.npz

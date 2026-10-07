@@ -104,7 +104,7 @@ def otsu_threshold(values: np.ndarray, nbins: int = 256) -> float:
     return float(centres[int(np.argmax(sigma_b))])
 
 
-def segment(field: np.ndarray, method: str = "half_max", rel_var_gate: float = 1e-3) -> tuple[np.ndarray, float]:
+def segment(field: np.ndarray, method: str = "half_max", rel_var_gate: float = 1e-3, level: float | None = None) -> tuple[np.ndarray, float]:
     """
     Variance-gated segmentation (CLAUDE.md §14). Uniform fields return an all-False or all-True
     mask by LEVEL (relative to 1.0 in dimensionless units), never by Otsu.
@@ -118,9 +118,13 @@ def segment(field: np.ndarray, method: str = "half_max", rel_var_gate: float = 1
         on = f.mean() > 0.5
         return np.full_like(f, on, dtype=bool), np.nan
     if method == "half_max":
-        thr = 0.5 * fmax
+        thr = 0.5 * fmax                     # fragile under continuous nucleation: fresh kicks set fmax (see measure_panels.py)
     elif method == "otsu":
         thr = otsu_threshold(f)
+    elif method == "fixed":
+        if level is None:
+            raise ValueError("fixed segmentation needs level")
+        thr = float(level)
     else:
         raise ValueError(method)
     return f > thr, thr
