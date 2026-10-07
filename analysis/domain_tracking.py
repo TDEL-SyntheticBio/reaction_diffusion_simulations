@@ -59,7 +59,7 @@ def track_run(path: Path):
                 n_alive_end=len(alive), births_per_10=float(np.mean(births)) if births else 0.0, deaths_per_10=float(np.mean(deaths)) if deaths else 0.0,
                 n_completed=len(completed), median_lifetime_completed=float(np.median(completed)) if completed else np.nan,
                 frac_completed_le20=float(np.mean(np.array(completed) <= 20)) if completed else np.nan,
-                frac_alive_since_t50=float(np.mean([tr["birth"] <= T_START + 1e-6 for tr in alive])) if alive else np.nan,
+                frac_alive_since_t50=float(np.mean([tr["birth"] <= T_START + 0.1 for tr in alive])) if alive else np.nan,
                 median_age_alive=float(np.median(ages)) if ages else np.nan,
                 mean_area_alive=float(np.mean([np.mean(tr["areas"]) for tr in alive])) if alive else np.nan)
 
