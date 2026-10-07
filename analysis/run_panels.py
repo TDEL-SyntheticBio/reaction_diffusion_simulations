@@ -54,6 +54,6 @@ if __name__ == "__main__":
         rows = pool.map(one, jobs, chunksize=1)
     summary = ROOT / "analysis" / "summaries" / f"{panel}_runs.csv"
     with open(summary, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows)
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(rows)
     for r in rows:
         print(r)

@@ -93,7 +93,7 @@ def main():
                     pooled[key].add(xy, win)
     out = ROOT / "analysis" / "summaries" / f"{PANEL}_measurements.csv"
     with open(out, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows)
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(rows)
 
     g_rows = []
     lam_nom, lam_lat = np.sqrt(D_I / GAMMA), np.sqrt(1.5 * D_I / GAMMA)
@@ -104,11 +104,11 @@ def main():
         g_rows.append(dict(protocol=protocol, bi=bi, t=tp, seeds=len(G.n_points), n_mean=float(np.mean(G.n_points)) if G.n_points else 0, **{k_: round(v, 3) for k_, v in s.items()}))
         print(f"{protocol:<12}{bi:>4}{tp:>5}{len(G.n_points):>6}{np.mean(G.n_points) if G.n_points else 0:>7.1f}{s['hole']:>7.2f}{s['peak1_r']:>8.2f}{s['peak1_g']:>8.2f}{s['trough_r']:>9.2f}{s['trough_g']:>9.2f}{s['peak2_r']:>8.2f}{s['peak2_g']:>8.2f}")
         with open(ROOT / "analysis" / "summaries" / f"{PANEL}_gr_{protocol}_bi{bi}_t{tp}.csv", "w", newline="") as fh:
-            w = csv.writer(fh); w.writerow(["r", "g", "h_data", "h_null_mean"])
+            w = csv.writer(fh, lineterminator="\n"); w.writerow(["r", "g", "h_data", "h_null_mean"])
             for r_, g_, hd, hn in zip(G.r, G.g(), G.h_data, G.h_null):
                 w.writerow([r_, g_, hd, hn])
     with open(ROOT / "analysis" / "summaries" / f"{PANEL}_gr.csv", "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(g_rows[0].keys())); w.writeheader(); w.writerows(g_rows)
+        w = csv.DictWriter(fh, fieldnames=list(g_rows[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(g_rows)
 
     print("\nper-run time series (mean over seeds):")
     import collections
