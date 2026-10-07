@@ -1,7 +1,8 @@
 """
 Run a published parameter set under both initiation protocols with several seeds (generalises
 run_fig1c_panels.py). Usage: python analysis/run_panels.py <panel> [n_seeds] [t_end] [spike_value_override] [only_bi]
-With an override the results go to results/<panel>_spike<value>/ (kick under nucleation = 2*spike_value, CLAUDE.md §6).
+With an override the results go to results/<panel>_spike<value>/. The kick is 2*a_ss, which equals 2*spike_value only when
+the solver finds no activated state (CLAUDE.md §6); the run CSV records the a_ss actually used.
 Output: results/<panel>/<protocol>_bi<bi>_seed<s>.npz + analysis/summaries/<panel>_runs.csv
 """
 from __future__ import annotations

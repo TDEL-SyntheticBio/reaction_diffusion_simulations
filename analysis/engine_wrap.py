@@ -30,8 +30,12 @@ def run(p: dict, *, protocol: str, seed: int, t_end: float, ny: int = 100, nx: i
         save_every: int = 200, spike_value: float | None = None, nucleation_rate: float | None = None,
         noise_amplitude: float = 0.0):
     """
-    protocol 'synchronous': random_uniform_over0, spike_value 1.0, no nucleation      (Fig 1C)
-    protocol 'nucleation' : all_off, spike_value 2.0, nucleation_rate 0.01           (Fig 2L/3/S8D)
+    protocol 'synchronous': random_uniform_over0, spike_value 1.0, nucleation 0.0   (Supp Table 1, Fig 1C; NOTE the
+                            deposit's committed batch template would have run this with nucleation 0.02, CLAUDE.md §9)
+    protocol 'nucleation' : all_off, spike_value 2.0, nucleation_rate 0.01           (Supp Table 1, Fig 2L/3/S8D)
+    Frames land at t = 0, 0.01, 10.01, 20.01, ... and the final frame at t_end + 0.01; the deposit's own "final" frames
+    sit 199 steps earlier (CLAUDE.md §8). The nucleation kick is 2*a_ss, which equals 2*spike_value only when the
+    steady-state solver finds no activated state (true for every committed panel at b_a = 5, CLAUDE.md §6).
     Returns dict with frames (list of (euler_step, a, i)), steps_used, a_ss, i_ss and the settings.
     """
     if protocol == "synchronous":
@@ -44,7 +48,10 @@ def run(p: dict, *, protocol: str, seed: int, t_end: float, ny: int = 100, nx: i
         sv = spike_value
     if nucleation_rate is not None:
         nr = nucleation_rate
-    n_frames = int(round(t_end / dt)) // save_every
+    total = int(round(t_end / dt))
+    if total % save_every:
+        raise ValueError(f"t_end/dt = {total} must be a multiple of save_every = {save_every} so the last frame is the final state")
+    n_frames = total // save_every
     steps = n_frames * save_every + 1
     np.random.seed(seed)
     with contextlib.redirect_stdout(io.StringIO()) as buf:

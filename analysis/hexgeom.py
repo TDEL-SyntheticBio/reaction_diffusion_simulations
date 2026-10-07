@@ -19,6 +19,7 @@ if str(_ENGINE_DIR) not in sys.path:
 from simulation_2D import _build_hex_neighbor_arrays  # noqa: E402
 
 SQRT3_2 = np.sqrt(3.0) / 2.0
+CELL_AREA = SQRT3_2          # area of one cell in centre-spacing units (hexagonal cell of a unit triangular lattice)
 
 
 def cell_centres(ny: int, nx: int) -> tuple[np.ndarray, np.ndarray]:
@@ -79,6 +80,7 @@ def component_table(mask: np.ndarray, min_size: int = 1) -> dict[str, np.ndarray
     """
     Per-component area (cells) and physical centroid, dropping components smaller than min_size.
     """
+    mask = np.asarray(mask, dtype=bool)
     labels, n = label_components(mask)
     ny, nx = mask.shape
     x, y = cell_centres(ny, nx)
@@ -101,21 +103,25 @@ def otsu_threshold(values: np.ndarray, nbins: int = 256) -> float:
     with np.errstate(divide="ignore", invalid="ignore"):
         sigma_b = (mu_t * omega - mu) ** 2 / (omega * (1 - omega))
     sigma_b[~np.isfinite(sigma_b)] = -1
-    return float(centres[int(np.argmax(sigma_b))])
+    k = int(np.argmax(sigma_b))
+    return float(edges[k + 1])            # the split edge, so every value of the lower class is below the threshold
 
 
-def segment(field: np.ndarray, method: str = "half_max", rel_var_gate: float = 1e-3, level: float | None = None) -> tuple[np.ndarray, float]:
+def segment(field: np.ndarray, method: str = "half_max", rel_var_gate: float = 1e-3, level: float | None = None,
+            off_floor: float = 0.25, on_level: float = 0.5) -> tuple[np.ndarray, float]:
     """
-    Variance-gated segmentation (CLAUDE.md §14). Uniform fields return an all-False or all-True
-    mask by LEVEL (relative to 1.0 in dimensionless units), never by Otsu.
-    Returns (mask, threshold_used).
+    Variance-gated segmentation (CLAUDE.md §14). A field whose maximum is below off_floor (absolute
+    activator units) is all OFF; a uniform field (relative spread below rel_var_gate) is classified by
+    its LEVEL against on_level, never by Otsu or half-max. Returns (mask, threshold_used).
+    Under continuous nucleation use method="fixed" with level ~ 0.3*act_prod_rate: with "half_max"
+    the threshold follows the most recent kick transient instead of the pattern.
     """
     f = np.asarray(field, dtype=float)
     fmax = float(f.max())
-    if fmax <= 0:
+    if fmax < off_floor:                                   # decaying or empty field: all OFF
         return np.zeros_like(f, dtype=bool), np.nan
-    if f.std() / max(fmax, 1e-12) < rel_var_gate:          # uniform field: classify by level
-        on = f.mean() > 0.5
+    if f.std() / fmax < rel_var_gate:                      # uniform field: classify by level
+        on = f.mean() > on_level
         return np.full_like(f, on, dtype=bool), np.nan
     if method == "half_max":
         thr = 0.5 * fmax                     # fragile under continuous nucleation: fresh kicks set fmax (see measure_panels.py)
@@ -136,5 +142,10 @@ def rasterize_discs(ny: int, nx: int, centres_xy: np.ndarray, radius: float | np
     mask = np.zeros((ny, nx), dtype=bool)
     radius = np.broadcast_to(np.asarray(radius, dtype=float), (len(centres_xy),))
     for (px, py), rad in zip(centres_xy, radius):
-        mask |= (x - px) ** 2 + (y - py) ** 2 <= rad ** 2
+        mask |= (x - px) ** 2 + (y - py) ** 2 <= rad ** 2 * (1 + 1e-9)   # tolerance: radii equal to lattice distances
     return mask
+
+
+def equivalent_radius(n_cells: int | float) -> float:
+    """Radius (centre-spacing units) of a disc with the area of n_cells hexagonal cells."""
+    return float(np.sqrt(n_cells * CELL_AREA / np.pi))

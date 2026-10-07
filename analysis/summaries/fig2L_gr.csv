@@ -1,7 +1,7 @@
-protocol,bi,t,seeds,n_mean,hole,peak1_r,peak1_g,trough_r,trough_g,peak2_r,peak2_g
-nucleation,0,50,0,0,nan,nan,nan,nan,nan,nan,nan
-nucleation,0,500,0,0,nan,nan,nan,nan,nan,nan,nan
-nucleation,25,50,3,17.333333333333332,9.067,13.75,1.23,14.75,0.0,25.25,2.29
-nucleation,25,500,3,18.333333333333332,12.193,17.25,1.639,22.25,0.0,26.25,3.503
-synchronous,25,50,3,56.0,7.589,10.25,1.296,22.25,0.65,24.75,1.174
-synchronous,25,500,3,52.333333333333336,9.084,10.25,1.773,19.25,0.561,24.75,1.319
+protocol,bi,t,hole,peak1_r,peak1_g,peak1_pairs,trough_r,trough_g,peak2_r,peak2_g,peak2_pairs,total_pairs,n_replicates,n_points_mean,hole_sd,peak1_r_sd,peak2_r_sd
+nucleation,0,50,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,0.0,0.0,nan,nan,nan
+nucleation,0,500,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,0.0,0.0,nan,nan,nan
+nucleation,25,50,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,93.0,3.0,17.333,nan,nan,nan
+nucleation,25,500,12.193,nan,nan,0.0,nan,nan,nan,nan,0.0,109.0,3.0,18.333,0.904,nan,nan
+synchronous,25,50,7.589,nan,nan,0.0,nan,nan,nan,nan,0.0,1280.0,3.0,56.0,0.378,0.703,nan
+synchronous,25,500,9.084,nan,nan,0.0,nan,nan,nan,nan,0.0,1114.0,3.0,52.333,0.566,0.741,3.688

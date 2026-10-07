@@ -24,7 +24,7 @@ from scipy.spatial import cKDTree
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from analysis.hexgeom import component_table, segment, window  # noqa: E402
-from analysis.pointstats import PooledG, nn_cv, nn_spacing  # noqa: E402
+from analysis.pointstats import PooledG, border_cv, csr_reference_cv, nn_cv  # noqa: E402
 
 PANEL = sys.argv[1] if len(sys.argv) > 1 else "fig1c_panels"
 RUNS = ROOT / "results" / PANEL
@@ -33,26 +33,6 @@ PERSIST = "persist" in sys.argv[3:]
 SUFFIX = "" if (SEG == "halfmax" and not PERSIST) else "_" + SEG.replace(":", "") + ("_persist" if PERSIST else "")
 T_POINTS = (10, 50, 100, 200, 350, 500)
 MIN_SIZE = {"synchronous": 1, "nucleation": 12}      # handoff §5: size filter mandatory under continuous nucleation
-
-
-def border_cv(xy, win):
-    xmin, xmax, ymin, ymax = win
-    if len(xy) < 3:
-        return np.nan, 0
-    d = nn_spacing(xy)
-    edge = np.minimum.reduce([xy[:, 0] - xmin, xmax - xy[:, 0], xy[:, 1] - ymin, ymax - xy[:, 1]])
-    keep = d < edge
-    return (float(d[keep].std() / d[keep].mean()) if keep.sum() > 2 else np.nan), int(keep.sum())
-
-
-def csr_reference_cv(n, win, rng, n_real=300):
-    """Plain and border-corrected NN CV of n uniform points in this window (finite-n, finite-window reference)."""
-    xmin, xmax, ymin, ymax = win
-    plain, border = [], []
-    for _ in range(n_real):
-        pts = np.column_stack([rng.uniform(xmin, xmax, n), rng.uniform(ymin, ymax, n)])
-        plain.append(nn_cv(pts)); border.append(border_cv(pts, win)[0])
-    return float(np.nanmean(plain)), float(np.nanmean(border))
 
 
 def segment_mode(a, r_a):
@@ -118,11 +98,12 @@ def main():
     lam_nom, lam_lat = np.sqrt(D_I / GAMMA), np.sqrt(1.5 * D_I / GAMMA)
     print(f"segmentation: {SEG}{' + persistence' if PERSIST else ''}; size cut {MIN_SIZE}")
     print(f"2*lambda_i nominal = {2*lam_nom:.2f} cells, lattice-corrected = {2*lam_lat:.2f} cells\n")
-    print(f"{'protocol':<12}{'b_i':>4}{'t':>5}{'seeds':>6}{'n/seed':>7}{'hole':>7}{'peak1_r':>8}{'peak1_g':>8}{'trough_r':>9}{'trough_g':>9}{'peak2_r':>8}{'peak2_g':>8}")
+    print(f"{'protocol':<12}{'b_i':>4}{'t':>5}{'seeds':>6}{'n/seed':>7}{'pairs':>7}{'hole':>7}{'+-':>5}{'peak1_r':>8}{'+-':>5}{'peak1_g':>8}{'pairs':>6}{'trough_r':>9}{'trough_g':>9}{'peak2_r':>8}{'peak2_g':>8}")
     for key in sorted(pooled):
         G = pooled[key]; s = G.summary(); protocol, bi, tp = key
-        g_rows.append(dict(protocol=protocol, bi=bi, t=tp, seeds=len(G.n_points), n_mean=float(np.mean(G.n_points)) if G.n_points else 0, **{k_: round(v, 3) for k_, v in s.items()}))
-        print(f"{protocol:<12}{bi:>4}{tp:>5}{len(G.n_points):>6}{np.mean(G.n_points) if G.n_points else 0:>7.1f}{s['hole']:>7.2f}{s['peak1_r']:>8.2f}{s['peak1_g']:>8.2f}{s['trough_r']:>9.2f}{s['trough_g']:>9.2f}{s['peak2_r']:>8.2f}{s['peak2_g']:>8.2f}")
+        g_rows.append(dict(protocol=protocol, bi=bi, t=tp, **{k_: round(v, 3) for k_, v in s.items()}))
+        print(f"{protocol:<12}{bi:>4}{tp:>5}{len(G.n_points):>6}{np.mean(G.n_points) if G.n_points else 0:>7.1f}{s['total_pairs']:>7.0f}"
+              f"{s['hole']:>7.2f}{s['hole_sd']:>5.2f}{s['peak1_r']:>8.2f}{s['peak1_r_sd']:>5.2f}{s['peak1_g']:>8.2f}{s['peak1_pairs']:>6.0f}{s['trough_r']:>9.2f}{s['trough_g']:>9.2f}{s['peak2_r']:>8.2f}{s['peak2_g']:>8.2f}")
         with open(ROOT / "analysis" / "summaries" / f"{PANEL}{SUFFIX}_gr_{protocol}_bi{bi}_t{tp}.csv", "w", newline="") as fh:
             w = csv.writer(fh, lineterminator="\n"); w.writerow(["r", "g", "h_data", "h_null_mean"])
             for r_, g_, hd, hn in zip(G.r, G.g(), G.h_data, G.h_null):

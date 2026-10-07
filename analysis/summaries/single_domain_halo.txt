@@ -1,0 +1,12 @@
+2D single arrested domain (121x121, disc seed radius 2.5 at level 5, no nucleation)
+R = area-equivalent radius in centre-spacing units (cell area sqrt(3)/2); I_shell = inhibitor on the outermost domain shell, I_rim just outside
+params (b_a,b_i,g,n_a,n_i,D)    steps     R  area lam K0-fit lam slope sqrt(D/g) sqrt(1.5D/g) Ishell/Iin Irim/Iin   I_in
+1C reg spots                    29999 20.33  1500      45.96     12.61      4.47         5.48      1.306    1.140   1.67   NOT ARRESTED, area history tail [1318, 1314, 1398, 1374, 1398, 1442]
+1C irreg spots                   4500  2.29    19       5.48      5.51      4.47         5.48      0.867    0.690   2.37
+2L JAPI                          4500  5.01    91       7.75      7.82      6.32         7.75      0.804    0.666  10.47
+3L JAPI                          4500  5.92   127       7.75      7.82      6.32         7.75      0.784    0.659  10.43
+3H low_di                        4500  2.29    19       3.88      3.89      3.16         3.87      0.806    0.550   9.23
+
+1D single arrested domain (N=201, activator_spike 2.0 at centre)
+1F irreg       steps   4000  half-width   1.5  lam slope  4.48  sqrt(D/g) 4.47  exact lattice 4.48  I(R)/I_in 0.887
+1F periodic    steps  29999  NOT A SINGLE DOMAIN (10 domains): no decay-length fit
