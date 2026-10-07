@@ -110,6 +110,16 @@ Verified numerically:
 | same, D_i=20 | fitted 7.9–8.3 cells ≈ 7.75; nominal 6.32 |
 | same, D_i=5 | fitted 3.9 cells ≈ 3.87; nominal 3.16 |
 
+Confirmed on the engine's own arrested domains (`analysis/single_domain_halo.py`, K0 fit of the
+exterior inhibitor; the fit reproduces an exact lattice Green's function to 0.1%):
+
+| parameter set | λ fitted | √(1.5·D_i/γ) | √(D_i/γ) |
+|---|---|---|---|
+| 1C irregular spots, D_i = 10 | **5.48** | 5.48 | 4.47 |
+| 2L / 3L JAPI, D_i = 20 | **7.75** | 7.75 | 6.32 |
+| 3H low_di, D_i = 5 | **3.88** | 3.87 | 3.16 |
+| 1D Fig 1F irregular, D_i = 10 | **4.48** | — | 4.47 (exact lattice 4.48) |
+
 So: the dispersion relation written with the lattice symbol, Δ/γ = (1 + λ²Λ(q))(1 − αK̂(q)) + G
 with λ² = D_i/γ, is internally consistent (the 1.5 lives inside Λ_hex). But **any statement of
 the inhibitor range in cells must use √(1.5·D_i/γ)**. The handoff's "λ_i = 4.5 cells (D_i=10),
@@ -339,3 +349,65 @@ A = a0^n_a, I = i0^n_i (Hill terms, not the solver's production ratios):
 - Use the fastest-growing mode, not the determinant minimum, for wavelength predictions.
 - Pool g(r) by summing counts across replicates, never by averaging curves.
 - Quote inhibitor ranges in cells as √(1.5·D_i/γ) in 2D and √(D_i/γ) in 1D, and say which.
+- **Segmentation under continuous nucleation**: never threshold at half the field maximum; the maximum
+  is the most recent kick (up to 3·a_ss) and the threshold then cuts through the domains (at b_i = 12 it
+  hid every domain). Use a fixed level, 0.3·act_prod_rate, require persistence across two frames t = 10
+  apart, and report the size distribution with the cut. Components are bimodal: ~40 single-cell
+  transients per frame on 100×100 at rate 0.01, and the domains. Counting the transients as spots is
+  what produced the October session's "CV 0.46–0.48, indistinguishable from random".
+- **Size cut**: the handoff's 12-cell cut is specific to 50-cell domains; at b_i = 12 (n = 3) domains are
+  12–19 cells and a 12-cell cut removes half of them. Set the cut from the measured domain-size
+  distribution (e.g. half the median persistent-domain area) and state it.
+- **Poisson reference for spacing CV**: not 0.52. In a 100×100 window the plain CV of a Poisson pattern is
+  0.55 for n = 20–90 and the border-corrected value 0.48–0.53; compute the reference for the same n in
+  the same window (`pointstats.csr_reference_cv`).
+- **g(r) features**: report hole and peak positions with their Poisson-bootstrap SD and the pair count
+  under each; peaks are only quoted when they are a strict interior maximum with ≥ 20 pairs and a 3σ
+  excess over the null. Three seeds of a 17-domain pattern (≈140 pairs) support a hole but no peak.
+  For components below ~10 cells use the lattice-site null (centroids sit on lattice sites).
+- **"Arrested" needs the isolated-seed test, run long.** A domain that is constant in area for 40 time
+  units can still divide at t = 350–500 (b_i = 9–10). Use `analysis/isolated_seed_fate.py` to t ≥ 600.
+
+## 15. Analysis package (`analysis/`, added 2026-10-07, reviewed by three independent passes)
+
+All code builds on the engine's own neighbour arrays, so adjacency and coordinates cannot drift from §2.
+`python analysis/validate_pipeline.py` runs 17 asserted ground-truth checks (perfect lattice, Poisson
+points, Poisson single cells with the lattice null, Poisson discs that merge into a hard core, hard-core
+process, mirrored adjacency) and exits non-zero on failure. Run it before trusting any new number.
+
+| module | purpose |
+|---|---|
+| `hexgeom.py` | even-r coordinates, `label_components` (engine adjacency, sparse graph), `component_table`, `segment` (variance gate + half_max / fixed / otsu), `rasterize_discs`, `equivalent_radius` (cell area √3/2) |
+| `pointstats.py` | `nn_cv`, `border_cv`, `csr_reference_cv`, `PooledG` (null-normalised g(r) pooled by summing counts, continuous or lattice null, bootstrap SDs, significance-gated peaks) |
+| `synthetic.py` | lattice / Poisson / hard-core point patterns for validation |
+| `engine_wrap.py` | seeded, protocol-explicit `run()` around the unmodified engine; last frame is the true final state; `t_end/dt` must be a multiple of `save_every` |
+| `run_panels.py` | any published set under both protocols, several seeds, optional spike override (`results/<panel>/`, `analysis/summaries/<panel>_runs.csv`) |
+| `measure_panels.py` | coverage, counts, areas, spacing CV with same-window CSR reference, pooled g(r); modes `halfmax` or `fixed:<frac> persist` |
+| `domain_tracking.py` | link domains across frames (t spacing 10): births, deaths, lifetimes, age of survivors |
+| `single_domain_halo.py` | inhibitor decay length around one arrested domain (2D K0 fit; 1D in a subprocess) |
+| `isolated_seed_fate.py` | fate of one 19-cell seed to t = 600 with snapshots: stable disc / ring / division / colony |
+| `plot_hex.py` | hex-correct rendering (the only correct renderer in the repo) |
+
+Raw run files go to `results/` (gitignored); every summary CSV and the PNG figures are under
+`analysis/summaries/`. The findings of the 2026-10-07 session are in `analysis/REPORT_2026-10-07.md`.
+
+## 16. Facts established on 2026-10-07 that later work should start from
+
+- The handoff's synchronous-start Fig 1C numbers reproduce exactly with this pipeline (b_i = 5: coverage
+  0.204, 88 domains, CV 0.068, hole 8.86 ± 0.07, first peak 2.89 at 10.75; b_i = 12: coverage 0.030,
+  17.7 domains, CV 0.083). The pipeline and the session's lost scripts agree where they overlap.
+- Under the experiment-matched protocol (all_off, nucleation 0.01, kick 4.0) the Fig 1C b_i = 5 field is
+  as ordered as the synchronous one (CV 0.08 vs 0.07), and the b_i = 12 field holds ~55 small domains
+  (12–19 cells) plus transients, not nothing. At the Fig 2L set the domains that exist at t = 500 were
+  all already present at t = 50: continuous nucleation does not keep disrupting the pattern; it sets the
+  density (18 domains of 53 cells vs 52 of 21 from a synchronous start) and then freezes.
+- The JA control (b_i = 0) under its published protocol is uniformly ON by t = 50 on 100×100.
+- On the Fig 1C line (b_a = 5, γ = 0.5, n = 3/3, D_i = 10) an isolated seed: Turing instability for
+  b_i ≤ 3.6 (closed form); ring fragmentation into a self-replicating colony for b_i = 4–8; a disc that
+  divides after t = 350–500 for b_i = 9–10; a single arrested domain for b_i ≥ 11 (19 cells at 12–14,
+  13 at 16, 7 at 20, independent of seed size down to one cell at level 5). The published "regular
+  spots" (b_i = 5) are self-replicating spots; the "irregular spots" (b_i = 12) are arrested domains.
+  Supplementary Note 4's isolated-domain picture applies only to the latter class.
+- The g(r) hole does not sit at 2λ_i with either λ: 8.9 (b_i = 5, sync), 9.7 (b_i = 5, nucleation),
+  11.0 (b_i = 12, nucleation), 16.3 (b_i = 12, sync, thinning-inflated), 9.1 / 12.2 (2L sync / nucleation)
+  against 2λ = 11.0 (D_i = 10) and 15.5 (D_i = 20). The handoff's "hole = 2λ_i" rested on the nominal λ.
