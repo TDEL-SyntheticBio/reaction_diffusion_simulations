@@ -1,6 +1,7 @@
 """
 Run a published parameter set under both initiation protocols with several seeds (generalises
-run_fig1c_panels.py). Usage: python analysis/run_panels.py <panel> [n_seeds] [t_end]
+run_fig1c_panels.py). Usage: python analysis/run_panels.py <panel> [n_seeds] [t_end] [spike_value_override] [only_bi]
+With an override the results go to results/<panel>_spike<value>/ (kick under nucleation = 2*spike_value, CLAUDE.md §6).
 Output: results/<panel>/<protocol>_bi<bi>_seed<s>.npz + analysis/summaries/<panel>_runs.csv
 """
 from __future__ import annotations
@@ -27,13 +28,13 @@ SAVE_EVERY = 1000   # frame every t = 10
 
 
 def one(job):
-    panel, protocol, bi, seed, t_end = job
+    panel, protocol, bi, seed, t_end, spike, tag = job
     spec = PANELS[panel]
     t0 = time.perf_counter()
     res = run(spec["circuits"][bi], protocol=protocol, seed=seed, t_end=t_end, save_every=SAVE_EVERY,
-              spike_value=spec["protocols"][protocol], ny=spec["grid"][0], nx=spec["grid"][1])
+              spike_value=spike if spike is not None else spec["protocols"][protocol], ny=spec["grid"][0], nx=spec["grid"][1])
     steps, A, I = zip(*res["frames"])
-    out = ROOT / "results" / panel
+    out = ROOT / "results" / tag
     path = out / f"{protocol}_bi{bi}_seed{seed}.npz"
     np.savez_compressed(path, euler_step=np.array(steps), t=np.array(steps) * res["dt"], a=np.array(A, dtype=np.float32),
                         i=np.array(I, dtype=np.float32), **{k: np.array(v) for k, v in res["settings"].items() if not isinstance(v, str)},
@@ -46,13 +47,17 @@ if __name__ == "__main__":
     panel = sys.argv[1]
     n_seeds = int(sys.argv[2]) if len(sys.argv) > 2 else 3
     t_end = float(sys.argv[3]) if len(sys.argv) > 3 else 500.0
+    spike = float(sys.argv[4]) if len(sys.argv) > 4 else None
+    only_bi = int(sys.argv[5]) if len(sys.argv) > 5 else None
     spec = PANELS[panel]
-    (ROOT / "results" / panel).mkdir(parents=True, exist_ok=True)
-    jobs = [(panel, prot, bi, seed, t_end) for prot in spec["protocols"] for bi in spec["circuits"] for seed in range(1, n_seeds + 1)
-            if not (bi == 0 and prot == "synchronous")]          # JA control only under the published nucleation protocol
+    tag = panel if spike is None else f"{panel}_spike{spike:g}"
+    (ROOT / "results" / tag).mkdir(parents=True, exist_ok=True)
+    protocols = list(spec["protocols"]) if spike is None else ["nucleation"]
+    jobs = [(panel, prot, bi, seed, t_end, spike, tag) for prot in protocols for bi in spec["circuits"] for seed in range(1, n_seeds + 1)
+            if not (bi == 0 and prot == "synchronous") and (only_bi is None or bi == only_bi)]   # JA control only under the published nucleation protocol
     with Pool(3) as pool:
         rows = pool.map(one, jobs, chunksize=1)
-    summary = ROOT / "analysis" / "summaries" / f"{panel}_runs.csv"
+    summary = ROOT / "analysis" / "summaries" / f"{tag}_runs.csv"
     with open(summary, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(rows)
     for r in rows:
