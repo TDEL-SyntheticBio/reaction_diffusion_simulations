@@ -1,0 +1,10 @@
+panel,protocol,bi,seed,steps_used,a_ss,i_ss,final_a_max,wall_s,file
+fig2L,nucleation,25,1,50001,2.0,2.0,4.9961375695983055,176.2,nucleation_bi25_seed1.npz
+fig2L,nucleation,25,2,50001,2.0,2.0,4.996426260684956,174.5,nucleation_bi25_seed2.npz
+fig2L,nucleation,25,3,50001,2.0,2.0,4.997249638748883,180.9,nucleation_bi25_seed3.npz
+fig2L,nucleation,0,1,50001,2.0,2.0,4.999999487999572,156.9,nucleation_bi0_seed1.npz
+fig2L,nucleation,0,2,50001,2.0,2.0,4.999999487999572,154.7,nucleation_bi0_seed2.npz
+fig2L,nucleation,0,3,50001,2.0,2.0,4.999999487999572,152.1,nucleation_bi0_seed3.npz
+fig2L,synchronous,25,1,50001,2.0,2.0,4.999013176833801,87.9,synchronous_bi25_seed1.npz
+fig2L,synchronous,25,2,50001,2.0,2.0,4.9992794502879985,85.8,synchronous_bi25_seed2.npz
+fig2L,synchronous,25,3,50001,2.0,2.0,4.999418191453712,87.9,synchronous_bi25_seed3.npz

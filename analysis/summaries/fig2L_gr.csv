@@ -1,0 +1,7 @@
+protocol,bi,t,seeds,n_mean,hole,peak1_r,peak1_g,trough_r,trough_g,peak2_r,peak2_g
+nucleation,0,50,0,0,nan,nan,nan,nan,nan,nan,nan
+nucleation,0,500,0,0,nan,nan,nan,nan,nan,nan,nan
+nucleation,25,50,3,17.333333333333332,9.067,13.75,1.23,14.75,0.0,25.25,2.29
+nucleation,25,500,3,18.333333333333332,12.193,17.25,1.639,22.25,0.0,26.25,3.503
+synchronous,25,50,3,56.0,7.589,10.25,1.296,22.25,0.65,24.75,1.174
+synchronous,25,500,3,52.333333333333336,9.084,10.25,1.773,19.25,0.561,24.75,1.319
