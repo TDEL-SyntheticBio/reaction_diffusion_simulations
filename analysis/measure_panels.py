@@ -5,11 +5,12 @@ Per run and time point: coverage, component count (two size cuts), area mean/CV,
 (plain and border-corrected) with a CSR reference computed for the SAME n in the SAME window.
 Per (protocol, b_i, t): g(r) pooled over seeds by summing counts; hole, first peak, trough, second
 peak; compared with 2*lambda_i nominal (sqrt(D/g)) and lattice-corrected (sqrt(1.5 D/g)).
-Outputs: analysis/summaries/fig1c_measurements.csv, analysis/summaries/fig1c_gr.csv
+Usage: python analysis/measure_panels.py <results subdir>   (default fig1c_panels)
+Outputs: analysis/summaries/<subdir>_measurements.csv, <subdir>_gr.csv, <subdir>_gr_<protocol>_bi<bi>_t<t>.csv
 """
 from __future__ import annotations
 
-import csv, sys
+import csv, sys, zlib
 from pathlib import Path
 
 import numpy as np
@@ -20,10 +21,10 @@ sys.path.insert(0, str(ROOT))
 from analysis.hexgeom import component_table, segment, window  # noqa: E402
 from analysis.pointstats import PooledG, nn_cv, nn_spacing  # noqa: E402
 
-RUNS = ROOT / "results" / "fig1c_panels"
+PANEL = sys.argv[1] if len(sys.argv) > 1 else "fig1c_panels"
+RUNS = ROOT / "results" / PANEL
 T_POINTS = (10, 50, 100, 200, 350, 500)
 MIN_SIZE = {"synchronous": 1, "nucleation": 12}      # handoff §5: size filter mandatory under continuous nucleation
-D_I, GAMMA = 10.0, 0.5
 
 
 def border_cv(xy, win):
@@ -70,6 +71,7 @@ def main():
     for f in files:
         d = np.load(f, allow_pickle=False)
         protocol = str(d["protocol"]); bi = int(d["inh_prod_rate"]); seed = int(d["seed"])
+        D_I, GAMMA = float(d["inh_diffusion"]), float(d["inh_decay_rate"])
         t = d["t"]
         for tp in T_POINTS:
             k = int(np.argmin(np.abs(t - tp)))
@@ -86,10 +88,10 @@ def main():
             rows.append(dict(protocol=protocol, bi=bi, seed=seed, t=tp, **{k_: (round(v, 4) if isinstance(v, float) else v) for k_, v in m.items()}))
             if tp in (50, 500):
                 key = (protocol, bi, tp)
-                pooled.setdefault(key, PooledG(r_max=35, dr=0.5, n_null=150, seed=hash(key) % 2**31))
+                pooled.setdefault(key, PooledG(r_max=35, dr=0.5, n_null=150, seed=zlib.crc32(repr(key).encode())))   # deterministic across processes
                 if n > 2:
                     pooled[key].add(xy, win)
-    out = ROOT / "analysis" / "summaries" / "fig1c_measurements.csv"
+    out = ROOT / "analysis" / "summaries" / f"{PANEL}_measurements.csv"
     with open(out, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows)
 
@@ -101,11 +103,11 @@ def main():
         G = pooled[key]; s = G.summary(); protocol, bi, tp = key
         g_rows.append(dict(protocol=protocol, bi=bi, t=tp, seeds=len(G.n_points), n_mean=float(np.mean(G.n_points)) if G.n_points else 0, **{k_: round(v, 3) for k_, v in s.items()}))
         print(f"{protocol:<12}{bi:>4}{tp:>5}{len(G.n_points):>6}{np.mean(G.n_points) if G.n_points else 0:>7.1f}{s['hole']:>7.2f}{s['peak1_r']:>8.2f}{s['peak1_g']:>8.2f}{s['trough_r']:>9.2f}{s['trough_g']:>9.2f}{s['peak2_r']:>8.2f}{s['peak2_g']:>8.2f}")
-        with open(ROOT / "analysis" / "summaries" / f"fig1c_gr_{protocol}_bi{bi}_t{tp}.csv", "w", newline="") as fh:
+        with open(ROOT / "analysis" / "summaries" / f"{PANEL}_gr_{protocol}_bi{bi}_t{tp}.csv", "w", newline="") as fh:
             w = csv.writer(fh); w.writerow(["r", "g", "h_data", "h_null_mean"])
             for r_, g_, hd, hn in zip(G.r, G.g(), G.h_data, G.h_null):
                 w.writerow([r_, g_, hd, hn])
-    with open(ROOT / "analysis" / "summaries" / "fig1c_gr.csv", "w", newline="") as fh:
+    with open(ROOT / "analysis" / "summaries" / f"{PANEL}_gr.csv", "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(g_rows[0].keys())); w.writeheader(); w.writerows(g_rows)
 
     print("\nper-run time series (mean over seeds):")

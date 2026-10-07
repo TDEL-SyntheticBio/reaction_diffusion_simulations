@@ -71,8 +71,8 @@ class PooledG:
     def summary(self, rise_level: float = 0.5) -> dict[str, float]:
         """
         hole: r at which g first rises through rise_level (linear interpolation); nan if never.
-        peak1_r / peak1_g: position and height of the first local maximum after the hole.
-        trough_g: minimum of g between the first and second peaks (nan if no second peak).
+        peak1_r / peak1_g: maximum of g in the first coordination shell [hole, 1.6*hole + 2].
+        peak2_r / peak2_g: maximum of g in [1.5, 2.5] x peak1_r (second shell); trough: minimum in between.
         """
         g = self.g(); r = self.r
         out = {"hole": np.nan, "peak1_r": np.nan, "peak1_g": np.nan, "trough_r": np.nan,
@@ -87,13 +87,14 @@ class PooledG:
         else:
             out["hole"] = float(r[k])
         gs = np.where(valid, g, -np.inf)
-        peaks = [i for i in range(k, len(g) - 1) if gs[i] >= gs[i - 1] and gs[i] > gs[i + 1]]
-        if peaks:
-            p1 = peaks[0]; out["peak1_r"], out["peak1_g"] = float(r[p1]), float(g[p1])
-            later = [p for p in peaks[1:] if g[p] > 1.0 or p == peaks[-1]]
-            if len(peaks) > 1:
-                p2 = peaks[1]
-                seg = slice(p1, p2 + 1)
-                t = p1 + int(np.nanargmin(np.where(valid[seg], g[seg], np.inf)))
-                out.update(trough_r=float(r[t]), trough_g=float(g[t]), peak2_r=float(r[p2]), peak2_g=float(g[p2]))
+        # first peak: maximum of g within [hole, 1.6*hole + 2] (the first coordination shell)
+        hi = min(len(g) - 1, int(np.searchsorted(r, 1.6 * out["hole"] + 2.0)))
+        p1 = k + int(np.argmax(gs[k:hi + 1]))
+        out["peak1_r"], out["peak1_g"] = float(r[p1]), float(g[p1])
+        # second shell: maximum of g within [1.5, 2.5] x first-peak radius; trough = minimum in between
+        lo2 = int(np.searchsorted(r, 1.5 * r[p1])); hi2 = min(len(g) - 1, int(np.searchsorted(r, 2.5 * r[p1])))
+        if hi2 > lo2 > p1:
+            p2 = lo2 + int(np.argmax(gs[lo2:hi2 + 1]))
+            t = p1 + int(np.argmin(np.where(valid[p1:p2 + 1], g[p1:p2 + 1], np.inf)))
+            out.update(trough_r=float(r[t]), trough_g=float(g[t]), peak2_r=float(r[p2]), peak2_g=float(g[p2]))
         return out

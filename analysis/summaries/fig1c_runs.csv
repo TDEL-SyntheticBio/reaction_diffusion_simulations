@@ -1,0 +1,13 @@
+protocol,bi,seed,steps_used,a_ss,i_ss,final_a_max,wall_s,file
+synchronous,5,1,50001,1.0,1.0,4.247830576896273,70.8,synchronous_bi5_seed1.npz
+synchronous,5,2,50001,1.0,1.0,4.2603911626600315,69.8,synchronous_bi5_seed2.npz
+synchronous,5,3,50001,1.0,1.0,4.2646711361792855,71.7,synchronous_bi5_seed3.npz
+synchronous,12,1,50001,1.0,1.0,3.662222720546617,89.1,synchronous_bi12_seed1.npz
+synchronous,12,2,50001,1.0,1.0,3.7473138922619857,84.9,synchronous_bi12_seed2.npz
+synchronous,12,3,50001,1.0,1.0,3.7439906163050143,85.5,synchronous_bi12_seed3.npz
+nucleation,5,1,50001,2.0,2.0,5.221740626074992,77.8,nucleation_bi5_seed1.npz
+nucleation,5,2,50001,2.0,2.0,5.254299388956163,77.0,nucleation_bi5_seed2.npz
+nucleation,5,3,50001,2.0,2.0,5.1037249377855085,77.2,nucleation_bi5_seed3.npz
+nucleation,12,1,50001,2.0,2.0,5.772389203116095,76.8,nucleation_bi12_seed1.npz
+nucleation,12,2,50001,2.0,2.0,4.638377528907425,75.2,nucleation_bi12_seed2.npz
+nucleation,12,3,50001,2.0,2.0,4.024411090256331,75.9,nucleation_bi12_seed3.npz
