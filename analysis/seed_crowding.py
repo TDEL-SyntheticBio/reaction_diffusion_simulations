@@ -123,11 +123,11 @@ def run(n_workers=4):
 
 
 def settle_time(series_t, series_a, series_b):
-    """First t after which both integer series stay unchanged through the last frame; None if never."""
+    """First t after which both integer series stay unchanged through the last frame (at least two frames); None if never."""
     last = len(series_t) - 1
     for j in range(last, -1, -1):
         if series_a[j] != series_a[last] or series_b[j] != series_b[last]:
-            return series_t[j + 1] if j + 1 <= last else None
+            return series_t[j + 1] if j + 1 < last else None
     return series_t[0]
 
 
@@ -152,16 +152,22 @@ def analyze():
         hit = np.nonzero((crit < 1e-4) & (loop_index > 1000))[0]
         t_stop = float(ct[hit[0]]) if hit.size else None
         final = rs[-1]
+        b = [r["blobs"] for r in rs]; c = [r["cells_on"] for r in rs]
+        j = len(b) - 1
+        while j > 0 and b[j - 1] == b[-1]:
+            j -= 1
+        settle_blobs = ts[j] if j < len(b) - 1 else None
         out.append(dict(bi=key[0], condition=key[1], replicate=key[2], settle_t=st if st is not None else "not settled",
+                        settle_blobs_t=settle_blobs if settle_blobs is not None else "not settled", cells_drift_500_600=c[-1] - c[-11],
                         criterion_stop_t=t_stop if t_stop is not None else "never", crit_min=f"{crit[5:].min():.1e}", crit_final=f"{crit[-1]:.1e}",
                         blobs_final=final["blobs"], cells_on_final=final["cells_on"], largest_final=final["largest_blob"],
                         coverage_final=round(final["coverage"], 4), total_activator_final=round(final["total_activator"], 1),
                         blobs_t60=[r for r in rs if r["t"] < 61][-1]["blobs"], blobs_t300=[r for r in rs if r["t"] < 301][-1]["blobs"]))
     with open(SUMM / "seed_crowding_settling.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(out)
-    print(f"{'bi':>3} {'condition':<8}{'rep':>4}{'settle':>12}{'1e-4 stop':>11}{'crit min':>9}{'crit end':>9}{'blobs@60':>9}{'@300':>6}{'@600':>6}{'cells@600':>10}{'largest':>8}{'cov':>7}")
+    print(f"{'bi':>3} {'condition':<8}{'rep':>4}{'settle':>12}{'blobs settle':>13}{'drift':>7}{'1e-4 stop':>11}{'crit min':>9}{'crit end':>9}{'blobs@60':>9}{'@300':>6}{'@600':>6}{'cells@600':>10}{'largest':>8}{'cov':>7}")
     for o in out:
-        print(f"{o['bi']:>3} {o['condition']:<8}{o['replicate']:>4}{str(o['settle_t']):>12}{str(o['criterion_stop_t']):>11}{o['crit_min']:>9}{o['crit_final']:>9}"
+        print(f"{o['bi']:>3} {o['condition']:<8}{o['replicate']:>4}{str(o['settle_t']):>12}{str(o['settle_blobs_t']):>13}{o['cells_drift_500_600']:>+7}{str(o['criterion_stop_t']):>11}{o['crit_min']:>9}{o['crit_final']:>9}"
               f"{o['blobs_t60']:>9}{o['blobs_t300']:>6}{o['blobs_final']:>6}{o['cells_on_final']:>10}{o['largest_final']:>8}{o['coverage_final']:>7.3f}")
     # figures: one grid per parameter set, rows = conditions (replicate 1 or 0), columns = snapshot times
     from analysis.plot_hex import save_panels
