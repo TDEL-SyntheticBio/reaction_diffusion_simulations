@@ -8,6 +8,7 @@ on the upper branch), "uniform ON" (tau(0) > 0), "Turing" (Delta(q) < 0 for some
 "linearly stable" otherwise. Lone-domain classes: dies / spreading / uniform / divides / unstable / stable,
 with the growth rate sigma where measured.
 Usage: python analysis/regime_map.py run [workers]   ->  analysis/summaries/regime_map.csv
+       python analysis/regime_map.py background      ->  analysis/summaries/regime_map_closed_form.csv (fine closed-form grid)
        python analysis/regime_map.py plot            ->  analysis/summaries/regime_map.png
 """
 from __future__ import annotations
@@ -74,6 +75,23 @@ def closed_form_class(ba, bi, g, na, ni, D):
     return ("Turing" if delta.min() < 0 else "linearly stable"), alpha, G
 
 
+BG_B_A = [float(f"{v:.3g}") for v in np.logspace(np.log10(2.5), np.log10(20), 41)]
+BG_B_I = [float(f"{v:.3g}") for v in np.logspace(0, 2, 81)]
+BG_OUT = ROOT / "analysis" / "summaries" / "regime_map_closed_form.csv"
+
+
+def background():
+    rows = []
+    for panel, (na, ni, D) in PANELS.items():
+        for ba in BG_B_A:
+            for bi in BG_B_I:
+                cls, alpha, G = closed_form_class(ba, bi, GAMMA, na, ni, D)
+                rows.append(dict(panel=panel, b_a=ba, b_i=bi, closed_form=cls, alpha=alpha, G=G))
+        print(panel, {c: sum(r["closed_form"] == c for r in rows if r["panel"] == panel) for c in ("no activated state", "uniform ON", "Turing", "linearly stable")}, flush=True)
+    with open(BG_OUT, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["panel", "b_a", "b_i", "closed_form", "alpha", "G"], lineterminator="\n"); w.writeheader(); w.writerows(rows)
+
+
 def _job(args):
     panel, ba, bi = args
     na, ni, D = PANELS[panel]
@@ -103,12 +121,23 @@ def plot():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    rows = list(csv.DictReader(open(OUT)))
+    rows = list(csv.DictReader(open(OUT))) if OUT.exists() else []
+    bg = list(csv.DictReader(open(BG_OUT))) if BG_OUT.exists() else []
     colors = {"dies": "#bbbbbb", "spreading": "#1b7837", "uniform": "#00441b", "divides": "#7fbc41", "unstable": "#fdb863", "stable": "#b2182b"}
+    bg_colors = {"no activated state": "#ffffff", "linearly stable": "#e0e0e0", "uniform ON": "#c6dbef", "Turing": "#fdd0a2"}
     cf_marker = {"no activated state": "", "uniform ON": "U", "Turing": "T", "linearly stable": "S"}
     fig, axes = plt.subplots(1, len(PANELS), figsize=(4.2 * len(PANELS), 4.4), squeeze=False)
     for ax, panel in zip(axes[0], PANELS):
         na, ni, D = PANELS[panel]
+        pb = [r for r in bg if r["panel"] == panel]
+        if pb:
+            bas = sorted({float(r["b_a"]) for r in pb}); bis = sorted({float(r["b_i"]) for r in pb})
+            idx = {c: k for k, c in enumerate(bg_colors)}
+            Z = np.full((len(bas), len(bis)), np.nan)
+            for r in pb:
+                Z[bas.index(float(r["b_a"])), bis.index(float(r["b_i"]))] = idx[r["closed_form"]]
+            from matplotlib.colors import ListedColormap
+            ax.pcolormesh(bis, bas, Z, cmap=ListedColormap(list(bg_colors.values())), vmin=-0.5, vmax=len(bg_colors) - 0.5, shading="nearest")
         for r in rows:
             if r["panel"] != panel:
                 continue
@@ -118,8 +147,9 @@ def plot():
         ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlabel("b_i"); ax.set_ylabel("b_a")
         ax.set_title(f"n_a={na}, n_i={ni}, D_i={D:g}, gamma={GAMMA}", fontsize=9)
     handles = [plt.Line2D([], [], marker="s", ls="", color=c, markeredgecolor="k", label=k) for k, c in colors.items()]
-    fig.legend(handles=handles, loc="lower center", ncol=6, fontsize=8, frameon=False, bbox_to_anchor=(0.5, -0.02))
-    fig.suptitle("Lone-domain fate (colour) and closed-form linear class (letter: T Turing, U uniform ON, S linearly stable, blank no activated state)", fontsize=9)
+    handles += [plt.Rectangle((0, 0), 1, 1, color=c, label="background: " + k) for k, c in bg_colors.items() if k != "no activated state"]
+    fig.legend(handles=handles, loc="lower center", ncol=5, fontsize=7, frameon=False, bbox_to_anchor=(0.5, -0.04))
+    fig.suptitle("Lone-domain fate (squares) over the closed-form linear class of the activated state (background; white = none)", fontsize=9)
     fig.tight_layout(rect=(0, 0.05, 1, 0.95)); fig.savefig(ROOT / "analysis" / "summaries" / "regime_map.png", dpi=160); plt.close(fig)
     print("regime_map.png written")
 
@@ -127,5 +157,7 @@ def plot():
 if __name__ == "__main__":
     if sys.argv[1] == "run":
         run(int(sys.argv[2]) if len(sys.argv) > 2 else 4)
+    elif sys.argv[1] == "background":
+        background()
     elif sys.argv[1] == "plot":
         plot()
