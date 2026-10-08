@@ -13,6 +13,12 @@ Expected answers (asserted with tolerances; the script exits non-zero on any FAI
   hard core r_ex=4         -> g(r) = 0 below 2 r_ex, hole 8 +- 0.5
   mirrored adjacency       -> a 30-cell engine diagonal is 1 component; mirrored it fragments
 Peak positions are bin centres (dr = 0.5), so a spacing on a bin edge reads +-dr/2.
+
+The suite ends with an ENGINE fate check through the public API alone (run_coupled_hex with
+init_mode='spike_steady_state', no custom seeding): at b_a=5, gamma=0.5, n=3/3, D_i=10 a single cell
+at level 5 must give one 19-cell domain at a true fixed point for b_i=12, and for b_i=5 one growing
+component that splits into twelve equal components (six-fold lattice symmetry) and keeps growing.
+This is the arrest-versus-replication split; it takes ~4 minutes. Pass --skip-engine to omit it.
 """
 from __future__ import annotations
 
@@ -51,6 +57,40 @@ def check(name: str, ok: bool, detail: str) -> None:
     print(f"   [{'PASS' if ok else 'FAIL'}] {name}: {detail}")
     if not ok:
         FAILS.append(name)
+
+
+def engine_fate_check() -> None:
+    """Arrest vs self-replication of a single activated cell, through run_coupled_hex only."""
+    import contextlib, io
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "2D_simulations"))
+    from simulation_2D import run_coupled_hex
+    N, steps, every = 141, 30001, 2000                 # frames after 1, 2001, ... Euler steps: t = 0.01 + 20*(k-1)
+    frame = {60: 4, 120: 7, 180: 10, 240: 13, 300: 16}
+    print("\nengine fate check (public API, spike_steady_state at level 5, threshold 1.5 = 0.3 r_a):")
+    for bi in (12, 5):
+        p = dict(act_half_sat=1.0, inh_half_sat=1.0, act_decay_rate=1.0, basal_prod=0.0, act_diffusion=1.0, act_prod_rate=5.0,
+                 inh_prod_rate=float(bi), inh_decay_rate=0.5, act_hill_coeff=3, inh_hill_coeff=3, inh_diffusion=10.0)
+        with contextlib.redirect_stdout(io.StringIO()):
+            A, I, step, a_ss, i_ss = run_coupled_hex(N, N, steps, 0.01, 1.0, p, 0.0, 10**9, init_mode="spike_steady_state",
+                                                     activator_type="juxtacrine", spike_value=5.0, save_every=every,
+                                                     nucleation_rate=0.0, noise_amplitude=0.0)
+        check(f"b_i={bi} engine used the spike_value fallback", a_ss == 5.0 and i_ss == 5.0 and len(A) == 17, f"a_ss {a_ss}, i_ss {i_ss}, {len(A)} frames")
+        comps = {}
+        for t, k in frame.items():
+            labels, n = label_components(A[k] > 1.5)
+            areas = sorted(np.bincount(labels[labels >= 0], minlength=n).tolist()) if n else []
+            comps[t] = (n, areas)
+        per_tile = (np.abs(A[-1] - A[-2]).sum() + np.abs(I[-1] - I[-2]).sum()) / (2 * N * N)
+        print("   " + "; ".join(f"t={t}: {n} comp, areas {ar if len(ar) <= 3 else [ar[0], '...', ar[-1]]}" for t, (n, ar) in comps.items()) + f"; per-tile change {per_tile:.1e}")
+        if bi == 12:
+            check("b_i=12 one 19-cell domain, identical t=60..300", all(n == 1 and ar == [19] for n, ar in comps.values()), f"{comps}")
+            check("b_i=12 is at a fixed point", per_tile < 1e-10, f"per-tile change over the last 2000 steps {per_tile:.1e}")
+        else:
+            grow = [comps[t][1][0] for t in (60, 120, 180)]
+            check("b_i=5 one growing component at t=60,120,180", all(comps[t][0] == 1 for t in (60, 120, 180)) and grow[0] < grow[1] < grow[2], f"areas {grow}")
+            n240, ar240 = comps[240]
+            check("b_i=5 splits into twelve equal components at t=240", n240 == 12 and len(set(ar240)) == 1, f"{n240} components, areas {ar240}")
+            check("b_i=5 still growing at t=300", sum(comps[300][1]) > sum(ar240) and per_tile > 1e-3, f"total {sum(ar240)} -> {sum(comps[300][1])}, per-tile change {per_tile:.1e}")
 
 
 def main() -> None:
@@ -149,6 +189,8 @@ def main() -> None:
     for name, nt, ns, cv, cvi, hole, pk, note in rows:
         f = lambda v: "   nan" if not np.isfinite(v) else f"{v:6.3f}"
         print(f"{name:<26}{nt:>7}{ns:>6}{f(cv):>9}{f(cvi):>9}{f(hole):>7}{f(pk):>7}  {note}")
+    if "--skip-engine" not in sys.argv:
+        engine_fate_check()
     print(f"\n{len(FAILS)} FAIL" + (": " + ", ".join(FAILS) if FAILS else ""))
     sys.exit(1 if FAILS else 0)
 
