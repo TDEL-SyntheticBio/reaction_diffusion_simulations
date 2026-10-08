@@ -17,7 +17,9 @@ Peak positions are bin centres (dr = 0.5), so a spacing on a bin edge reads +-dr
 The suite ends with an ENGINE fate check through the public API alone (run_coupled_hex with
 init_mode='spike_steady_state', no custom seeding): at b_a=5, gamma=0.5, n=3/3, D_i=10 a single cell
 at level 5 must give one 19-cell domain at a true fixed point for b_i=12, and for b_i=5 one growing
-component that splits into twelve equal components (six-fold lattice symmetry) and keeps growing.
+component that splits into twelve components in two six-fold orbits (six inner spots, six outer arcs:
+the lattice's six-fold symmetry) and keeps growing. Frame k is the state after (k-1)*2000+1 Euler
+steps, i.e. t = 20*(k-1) + 0.01; the deposit's own labels would call that frame t = 20*k.
 This is the arrest-versus-replication split; it takes ~4 minutes. Pass --skip-engine to omit it.
 """
 from __future__ import annotations
@@ -89,7 +91,9 @@ def engine_fate_check() -> None:
             grow = [comps[t][1][0] for t in (60, 120, 180)]
             check("b_i=5 one growing component at t=60,120,180", all(comps[t][0] == 1 for t in (60, 120, 180)) and grow[0] < grow[1] < grow[2], f"areas {grow}")
             n240, ar240 = comps[240]
-            check("b_i=5 splits into twelve equal components at t=240", n240 == 12 and len(set(ar240)) == 1, f"{n240} components, areas {ar240}")
+            orbits = {a: ar240.count(a) for a in set(ar240)}
+            six_fold = n240 == 12 and len(orbits) == 2 and all(c == 6 for c in orbits.values())
+            check("b_i=5 splits into twelve components in two six-fold orbits by t=240", six_fold, f"{n240} components, areas {ar240}")
             check("b_i=5 still growing at t=300", sum(comps[300][1]) > sum(ar240) and per_tile > 1e-3, f"total {sum(ar240)} -> {sum(comps[300][1])}, per-tile change {per_tile:.1e}")
 
 
