@@ -15,6 +15,7 @@ archived/
 *.pyd
 
 *.png
+!analysis/summaries/*.png
 *.mp4
 *.npz
 
