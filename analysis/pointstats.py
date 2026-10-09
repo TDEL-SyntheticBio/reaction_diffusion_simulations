@@ -160,7 +160,8 @@ class PooledG:
         """
         out = self._features(self.h_data, rise_level, min_pairs_bin, z_min)
         out.update(total_pairs=float(self.h_data.sum()), n_replicates=float(len(self.n_points)),
-                   n_points_mean=float(np.mean(self.n_points)) if self.n_points else 0.0, hole_sd=np.nan, peak1_r_sd=np.nan, peak2_r_sd=np.nan)
+                   n_points_mean=float(np.mean(self.n_points)) if self.n_points else 0.0, hole_sd=np.nan, peak1_r_sd=np.nan, peak2_r_sd=np.nan,
+                   peak1_g_sd=np.nan, peak2_g_sd=np.nan)
         if self.h_data.sum() < min_total_pairs:
             for key in ("hole", "peak1_r", "peak1_g", "trough_r", "trough_g", "peak2_r", "peak2_g"):
                 out[key] = np.nan
@@ -168,7 +169,7 @@ class PooledG:
         if n_boot > 0:
             rng = np.random.default_rng(12345)
             boots = [self._features(rng.poisson(self.h_data).astype(float), rise_level, min_pairs_bin, z_min) for _ in range(n_boot)]
-            for key in ("hole", "peak1_r", "peak2_r"):
+            for key in ("hole", "peak1_r", "peak2_r", "peak1_g", "peak2_g"):
                 vals = np.array([b[key] for b in boots], dtype=float)
                 out[key + "_sd"] = float(np.nanstd(vals)) if np.isfinite(vals).sum() > 10 else np.nan
         return out
