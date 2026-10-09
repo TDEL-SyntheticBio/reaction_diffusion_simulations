@@ -45,7 +45,7 @@ from scipy.spatial import cKDTree
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "2D_simulations"))
 from analysis.hexgeom import cell_centres, label_components, window  # noqa: E402
-from analysis.pointstats import PooledG, border_cv, csr_reference_cv, nn_spacing  # noqa: E402
+from analysis.pointstats import PooledG, border_cv, nn_spacing  # noqa: E402
 from analysis.seed_crowding import DT, SAVE_EVERY, central_seed, circuit, frame_time  # noqa: E402
 
 N, T_END = 200, 600.0
@@ -99,17 +99,32 @@ def area_stats(areas, prefix):
             f"{prefix}_median": float(np.median(a)), f"{prefix}_p10": float(np.percentile(a, 10)), f"{prefix}_p90": float(np.percentile(a, 90))}
 
 
+CSR_SEED = 20261009
+_CSR_CACHE = {}
+
+
 class CsrCache:
-    """Same-window, same-n CSR reference (plain and border-corrected NN CV), memoised on n within a run."""
-    def __init__(self, win, seed):
-        self.win, self.rng, self.cache = win, np.random.default_rng(seed), {}
+    """Same-window, same-n CSR reference (plain and border-corrected NN CV): a pure function of (n, window) seeded by n, so every
+    channel, replicate, set, frame and remeasure gets the identical value; n_real = max(CSR_REAL, 10000 // n) realisations (<= 1000);
+    the Monte-Carlo SD of each reference is returned with it."""
+    def __init__(self, win, seed=None):
+        self.win = win
 
     def __call__(self, n):
         if n < 3:
-            return np.nan, np.nan
-        if n not in self.cache:
-            self.cache[n] = csr_reference_cv(n, self.win, self.rng, n_real=CSR_REAL)
-        return self.cache[n]
+            return dict(csr_cv=np.nan, csr_cv_border=np.nan, csr_cv_sd=np.nan, csr_cv_border_sd=np.nan, csr_n_real=0)
+        key = (n, self.win)
+        if key not in _CSR_CACHE:
+            rng = np.random.default_rng([CSR_SEED, n]); n_real = min(1000, max(CSR_REAL, 10000 // n))
+            xmin, xmax, ymin, ymax = self.win
+            plain, border = [], []
+            for _ in range(n_real):
+                pts = np.column_stack([rng.uniform(xmin, xmax, n), rng.uniform(ymin, ymax, n)])
+                d = nn_spacing(pts); plain.append(d.std() / d.mean()); border.append(border_cv(pts, self.win)[0])
+            plain, border = np.array(plain), np.array(border, dtype=float)
+            _CSR_CACHE[key] = dict(csr_cv=float(plain.mean()), csr_cv_border=float(np.nanmean(border)), csr_cv_sd=float(plain.std()),
+                                   csr_cv_border_sd=float(np.nanstd(border)), csr_n_real=n_real)
+        return _CSR_CACHE[key]
 
 
 def measure_frame(F, prev_mask, thr, win, csr):
@@ -121,7 +136,7 @@ def measure_frame(F, prev_mask, thr, win, csr):
     xy = np.column_stack([comp["cx"][real], comp["cy"][real]]) if real.any() else np.empty((0, 2))
     d = nn_spacing(xy)
     cvb, nb = border_cv(xy, win) if len(xy) >= 3 else (np.nan, 0)
-    csr_plain, csr_border = csr(len(xy))
+    csr_ref = csr(len(xy))
     ecc = comp["ecc"][real]; ecc = ecc[np.isfinite(ecc)]
     return dict(cells_on_raw=int(raw.sum()), coverage_raw=float(raw.mean()), cells_on=int(mask.sum()), coverage=float(mask.mean()),
                 blobs_all=int(len(areas_all)), blobs_real=int(len(areas_real)), n_transient=int(len(areas_all) - len(areas_real)),
@@ -129,7 +144,7 @@ def measure_frame(F, prev_mask, thr, win, csr):
                 **area_stats(areas_real, "area_real"), **area_stats(areas_all, "area_all"),
                 nn_mean=float(d.mean()) if d.size else np.nan, nn_sd=float(d.std()) if d.size > 1 else np.nan,     # population SD: nn_cv = nn_sd / nn_mean, as in csr_reference_cv
                 nn_cv=float(d.std() / d.mean()) if d.size > 1 and d.mean() > 0 else np.nan, nn_cv_border=cvb, nn_n_border=nb,
-                csr_cv=csr_plain, csr_cv_border=csr_border,
+                **csr_ref,
                 ecc_mean=float(ecc.mean()) if ecc.size else np.nan, ecc_sd=float(ecc.std(ddof=1)) if ecc.size > 1 else np.nan,
                 areas=" ".join(map(str, areas_all))), comp, xy
 
@@ -148,7 +163,11 @@ def hex_power_spectrum(F, k_min_wavelength=80.0):
     Radially averaged power spectrum of a field on the engine's even-r hex lattice, computed at the physical cell positions
     (x = c + 0.5 on even rows, y = r sqrt(3)/2): a row-wise FFT in x combined with the exact phase factors of the row offsets and
     row positions in y, after mean removal and a separable Hann window. Bins of width 2 pi / nx in |q| up to pi.
-    Returns the curve (k, P) and the strongest interior peak with wavelength 2 pi / k, prominence and FWHM (in k and as a fraction).
+    The q = 0 mode (the DC residual of the windowed, mean-removed field) is excluded from the bins and from the totals.
+    Returns the curve (k, P) and the strongest interior peak with wavelength 2 pi / k, its prominence, its full width at half
+    PROMINENCE (scipy peak_widths, rel_height 0.5: the contour at P_peak - prominence/2, equal to the FWHM only when
+    fft_peak_prominence_rel = 1; fft_power_in_band is the fraction of the power inside that band) and an explicit FWHM
+    (fft_peak_fwhm_k: the contour at P_peak/2, walked outwards from the peak; fft_peak_fwhm_border = 1 when a side reaches the band edge).
     Checked against a direct DFT at the hex positions (agreement to 1e-15) and on a triangular arrangement of spots with
     nearest-neighbour spacing L, whose first reciprocal shell gives peak wavelength L sqrt(3)/2 (17.4 for L = 20), not L.
     """
@@ -163,12 +182,14 @@ def hex_power_spectrum(F, k_min_wavelength=80.0):
     S = np.abs(G) ** 2 / ((wy ** 2).sum() * (wx ** 2).sum())
     K = np.sqrt(qx[None, :] ** 2 + qy[:, None] ** 2)
     dk = 2 * np.pi / nx; edges = np.arange(0.0, np.pi + dk, dk)
-    idx = np.digitize(K.ravel(), edges) - 1; ok = (idx >= 0) & (idx < len(edges) - 1)
+    idx = np.digitize(K.ravel(), edges) - 1; ok = (idx >= 0) & (idx < len(edges) - 1) & (K.ravel() > 0)
     cnt = np.bincount(idx[ok], minlength=len(edges) - 1)
     P = np.bincount(idx[ok], weights=S.ravel()[ok], minlength=len(edges) - 1) / np.maximum(cnt, 1)
     k = 0.5 * (edges[:-1] + edges[1:])
+    total = float(S.ravel()[ok].sum())
     feat = dict(fft_peak_k=np.nan, fft_peak_wavelength=np.nan, fft_peak_power=np.nan, fft_peak_prominence=np.nan, fft_peak_prominence_rel=np.nan,
-                fft_peak_width_k=np.nan, fft_peak_width_rel=np.nan, fft_total_power=float(S.sum()), fft_power_in_band=np.nan)
+                fft_peak_width_k=np.nan, fft_peak_width_rel=np.nan, fft_peak_fwhm_k=np.nan, fft_peak_fwhm_rel=np.nan, fft_peak_fwhm_border=np.nan,
+                fft_total_power=total, fft_power_in_band=np.nan)
     sel = k >= 2 * np.pi / k_min_wavelength
     Ps = P[sel]; ks = k[sel]
     peaks, _ = find_peaks(Ps)
@@ -179,10 +200,19 @@ def hex_power_spectrum(F, k_min_wavelength=80.0):
         w = peak_widths(Ps, [p], rel_height=0.5)
         width_k = float(w[0][0] * dk); lo, hi = ks[int(round(w[2][0]))] if 0 <= int(round(w[2][0])) < ks.size else ks[0], ks[min(int(round(w[3][0])), ks.size - 1)]
         band = (k >= lo) & (k <= hi)
+        half = 0.5 * Ps[p]; L = p; R = p                     # explicit FWHM: walk out from the peak to the half-height crossings
+        while L > 0 and Ps[L] > half:
+            L -= 1
+        while R < Ps.size - 1 and Ps[R] > half:
+            R += 1
+        border = int(L == 0 and Ps[L] > half or R == Ps.size - 1 and Ps[R] > half)
+        kl = ks[L] + (half - Ps[L]) / (Ps[L + 1] - Ps[L]) * dk if Ps[L] <= half < Ps[L + 1] else ks[L]
+        kr = ks[R] - (half - Ps[R]) / (Ps[R - 1] - Ps[R]) * dk if Ps[R] <= half < Ps[R - 1] else ks[R]
         feat.update(fft_peak_k=float(ks[p]), fft_peak_wavelength=float(2 * np.pi / ks[p]), fft_peak_power=float(Ps[p]), fft_peak_prominence=pr,
                     fft_peak_prominence_rel=pr / float(Ps[p]) if Ps[p] > 0 else np.nan, fft_peak_width_k=width_k,
-                    fft_peak_width_rel=width_k / float(ks[p]), fft_power_in_band=float((P[band] * cnt[band]).sum() / max(S.sum(), 1e-300)))
-    curve = [dict(k=float(kk), wavelength=float(2 * np.pi / kk) if kk > 0 else np.inf, P=float(pp), n_modes=int(cc)) for kk, pp, cc in zip(k, P, cnt)]
+                    fft_peak_width_rel=width_k / float(ks[p]), fft_peak_fwhm_k=float(kr - kl), fft_peak_fwhm_rel=float((kr - kl) / ks[p]),
+                    fft_peak_fwhm_border=border, fft_power_in_band=float((P[band] * cnt[band]).sum() / max(total, 1e-300)))
+    curve = [dict(k=float(kk), wavelength=(np.inf if j == 0 else float(2 * np.pi / kk)), P=float(pp), n_modes=int(cc)) for j, (kk, pp, cc) in enumerate(zip(k, P, cnt))]
     return feat, curve
 
 
@@ -335,7 +365,16 @@ def write_parts(out_dir, tag, frame_rows, gr_rows, gr_curves, fft_rows, fft_curv
 
 def remeasure(path):
     """Recompute every measurement of a saved run from its stored frames (after a change to the measurement code); the runs part keeps
-    its engine columns and gets the measurement columns refreshed."""
+    its engine columns and gets the measurement columns refreshed. A failure is written to parts/<tag>_remeasure_error.txt."""
+    try:
+        _remeasure(path)
+    except Exception as exc:
+        import traceback
+        (path.parent / "parts" / f"{path.stem}_remeasure_error.txt").write_text(traceback.format_exc())
+        print(f"REMEASURE FAILED {path.name}: {exc!r}", flush=True)
+
+
+def _remeasure(path):
     d = np.load(path); tag = path.stem; out_dir = path.parent
     setname, cond, rep = tag.rsplit("_rep", 1)[0].rsplit("_", 1)[0], tag.rsplit("_rep", 1)[0].rsplit("_", 1)[1], int(tag.rsplit("_rep", 1)[1])
     bi, anchor = SETS[setname]; meta = dict(set=setname, b_i=bi, anchor=anchor, condition=cond, replicate=rep)
@@ -359,7 +398,7 @@ def measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, m
     """All measurements of one run from its saved frames; returns the row lists for the parts files."""
     frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ = [], [], [], [], [], [], []
     for ch, H in fields.items():
-        csr = CsrCache(win, seed=rep * 7 + (0 if ch == "a" else 1))
+        csr = CsrCache(win)
         xy_seq, area_seq, t_seq = [], [], []
         i_floor = thr_fixed["i"] / 30.0          # 0.01 r_i / gamma: an inhibitor field below this is off (no half-max segmentation of a decayed field)
         def level(k):      # activator: fixed 0.3 r_a; inhibitor: half of the frame's own maximum (persistence uses the previous frame's own level)
@@ -393,6 +432,13 @@ def measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, m
         rows, summ = track_rows(tracks, births, deaths, t_seq[-1], dict(**meta, channel=ch))
         track_rows_all += rows; track_summ.append(summ)
     return frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ
+
+
+def parse_sets(args):
+    bad = [a for a in args if a not in SETS]
+    if bad:
+        raise SystemExit(f"unknown set(s) {bad}; known: {list(SETS)}")
+    return list(args) or ORDER
 
 
 def jobs_for(sets):
@@ -446,7 +492,7 @@ if __name__ == "__main__":
         print(f"wall {time.perf_counter() - t0:.0f} s for one 200x200 nucleation run with the full pipeline (engine {r['wall_engine_s']} s)")
     elif cmd == "run":
         n_workers = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2].isdigit() else 4
-        sets = [a for a in sys.argv[2:] if a in SETS] or ORDER
+        sets = parse_sets(sys.argv[3:] if len(sys.argv) > 2 and sys.argv[2].isdigit() else sys.argv[2:])
         jobs = [j for j in jobs_for(sets) if not ((RES / f"{j[0]}_{j[1]}_rep{j[2]}.npz").exists() and (PARTS / f"{j[0]}_{j[1]}_rep{j[2]}_runs.csv").exists())]
         print(f"{len(jobs)} runs on {n_workers} workers: sets {sets} (finished runs are skipped)", flush=True)
         t0 = time.perf_counter()
@@ -460,8 +506,10 @@ if __name__ == "__main__":
         collect()
     elif cmd == "remeasure":
         files = sorted(RES.glob("*.npz"))
-        with Pool(int(sys.argv[2]) if len(sys.argv) > 2 else 4) as pool:
-            pool.map(remeasure, files, chunksize=1)
-        collect()
+        try:
+            with Pool(int(sys.argv[2]) if len(sys.argv) > 2 else 4) as pool:
+                pool.map(remeasure, files, chunksize=1)
+        finally:
+            collect()
     elif cmd == "figures":
-        figures([a for a in sys.argv[2:] if a in SETS] or ORDER)
+        figures(parse_sets(sys.argv[2:]))
