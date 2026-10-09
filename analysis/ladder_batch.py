@@ -25,6 +25,7 @@ Usage:
   python analysis/ladder_batch.py time                      # one representative run (bi25, nucl) with the full pipeline; prints timings
   python analysis/ladder_batch.py run [workers] [set ...]   # the batch (default: all sets in ORDER); per-run parts are written as they finish
   python analysis/ladder_batch.py collect                   # concatenate results/ladder/parts/* into analysis/summaries/ladder_*.csv
+  python analysis/ladder_batch.py remeasure [workers]       # recompute all measurements from the stored frames (after a code change), then collect
   python analysis/ladder_batch.py figures [set ...]         # hex-correct grids per set and channel from the saved snapshots
 Outputs: results/ladder/<set>_<cond>_rep<r>.npz; results/ladder/parts/*; analysis/summaries/ladder_{runs,frames,gr,gr_curves,fft,
   fft_curves,tracks,tracking}.csv; analysis/summaries/ladder_<set>_{a,i}.png.
@@ -146,6 +147,8 @@ def hex_power_spectrum(F, k_min_wavelength=80.0):
     (x = c + 0.5 on even rows, y = r sqrt(3)/2): a row-wise FFT in x combined with the exact phase factors of the row offsets and
     row positions in y, after mean removal and a separable Hann window. Bins of width 2 pi / nx in |q| up to pi.
     Returns the curve (k, P) and the strongest interior peak with wavelength 2 pi / k, prominence and FWHM (in k and as a fraction).
+    Checked against a direct DFT at the hex positions (agreement to 1e-15) and on a triangular arrangement of spots with
+    nearest-neighbour spacing L, whose first reciprocal shell gives peak wavelength L sqrt(3)/2 (17.4 for L = 20), not L.
     """
     ny, nx = F.shape
     wy, wx = np.hanning(ny), np.hanning(nx)
@@ -231,6 +234,19 @@ def track_rows(tracks, births, deaths, t_last, meta):
 
 # ---------------------------------------------------------------------------------------------- one run
 def run_one(job):
+    """Wrapper: a failure in one run is written to parts/<tag>_error.txt and returned as a row, so the pool keeps going."""
+    setname, cond, rep, out_dir = job
+    try:
+        return _run_one(job)
+    except Exception as exc:
+        import traceback
+        (out_dir / "parts").mkdir(parents=True, exist_ok=True)
+        (out_dir / "parts" / f"{setname}_{cond}_rep{rep}_error.txt").write_text(traceback.format_exc())
+        print(f"RUN FAILED {setname}_{cond}_rep{rep}: {exc!r}", flush=True)
+        return dict(set=setname, condition=cond, replicate=rep, error=repr(exc))
+
+
+def _run_one(job):
     setname, cond, rep, out_dir = job
     from simulation_2D import run_coupled_hex
     bi, anchor = SETS[setname]
@@ -264,9 +280,75 @@ def run_one(job):
     crit_t = np.array([frame_time(k) for k in range(1, len(A))])
     win = window(N, N); lattice_xy = np.column_stack([c_.ravel() for c_ in cell_centres(N, N)])
     fields = {"a": A, "i": I}
-    frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ = [], [], [], [], [], [], []
-    snaps = {}
     rec = [0] + [k for k in range(1, len(A)) if (k - 1) % FRAME_EVERY == 0]
+    # the engine output is saved before any measurement: every recorded frame (t = 0, 0.01, 10, ..., 600) of both channels in float32,
+    # the snapshots at SNAP_T, the final state in float64 and the convergence series, so that everything below can be recomputed
+    snaps = {f"{ch}_t{round(frame_time(k))}": H[k].astype(np.float32) for ch, H in fields.items() for k in rec if k >= 1 and round(frame_time(k)) in SNAP_T}
+    np.savez_compressed(out_dir / f"{tag}.npz", a_final=A[-1], i_final=I[-1], t_final=frame_time(len(A) - 1), steps=steps, step_returned=step,
+                        crit=crit, crit_a=crit_a, crit_i=crit_i, crit_t=crit_t, a_ss=a_ss, i_ss=i_ss, thr_a=thr_fixed["a"], thr_i_fixed=thr_fixed["i"],
+                        params=json.dumps(p), condition=json.dumps(c), spike_seed=str(spike_seed), np_seed=rep, grid=N,
+                        frame_t=np.array([frame_time(k) for k in rec]), frame_k=np.array(rec),
+                        a_frames=np.stack([A[k] for k in rec]).astype(np.float32), i_frames=np.stack([I[k] for k in rec]).astype(np.float32), **snaps)
+    t_saved = time.perf_counter() - t0
+    try:
+        rows_out = measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, meta, rep)
+    except Exception as exc:           # the run is on disk; record the failure and keep the batch going
+        import traceback
+        (out_dir / "parts" / f"{tag}_error.txt").write_text(traceback.format_exc())
+        print(f"MEASUREMENT FAILED {tag}: {exc!r} (engine output saved)", flush=True)
+        return dict(**meta, error=repr(exc), wall_engine_s=round(t_engine, 1))
+    frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ = rows_out
+    t_total = time.perf_counter() - t0
+    last = {r["channel"]: r for r in frame_rows if r["frame"] == rec[-1]}
+    last_i_level = last["i"]["threshold"]
+    run_row = dict(**meta, init_mode=c["init_mode"], n_points=c["n_points"], spike_value=c["spike_value"], set_peak_height=c["set_peak_height"],
+                   nucleation_rate=c["nucleation_rate"], spike_seed=spike_seed, np_seed=rep, a_ss=float(a_ss), i_ss=float(i_ss), thr_a=thr_fixed["a"],
+                   thr_i_fixed=thr_fixed["i"], thr_i_halfmax_final=last_i_level,
+                   grid=N, steps=steps, t_final=round(frame_time(len(A) - 1), 2), wall_engine_s=round(t_engine, 1), wall_save_s=round(t_saved - t_engine, 1),
+                   wall_total_s=round(t_total, 1), crit_final=float(crit[-1]), crit_min_after_t10=float(crit[5:].min()),
+                   **{f"{ch}_{k}": last[ch][k] for ch in ("a", "i") for k in ("cells_on", "coverage", "blobs_all", "blobs_real", "n_transient", "largest",
+                                                                             "area_real_median", "area_real_cv", "nn_cv_border", "csr_cv_border", "ecc_mean", "total")})
+    write_parts(out_dir, tag, frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ, run_row)
+    rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6
+    print(f"done {tag}: engine {t_engine:.0f} s, total {t_total:.0f} s, peak RSS {rss:.2f} GB, a: {last['a']['blobs_real']} real / {last['a']['n_transient']} transient, "
+          f"cov {last['a']['coverage']:.3f}; i: {last['i']['blobs_real']} real, cov {last['i']['coverage']:.3f}", flush=True)
+    return run_row
+
+
+def write_parts(out_dir, tag, frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ, run_row):
+    for name, rows in (("frames", frame_rows), ("gr", gr_rows), ("gr_curves", gr_curves), ("fft", fft_rows), ("fft_curves", fft_curves),
+                       ("tracks", track_rows_all), ("tracking", track_summ), ("runs", [run_row])):
+        if rows:
+            cols = list(dict.fromkeys(k for r in rows for k in r))        # ordered union: inhibitor rows carry extra i_fixed_* columns
+            with open(out_dir / "parts" / f"{tag}_{name}.csv", "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=cols, lineterminator="\n"); w.writeheader(); w.writerows(rows)
+
+
+def remeasure(path):
+    """Recompute every measurement of a saved run from its stored frames (after a change to the measurement code); the runs part keeps
+    its engine columns and gets the measurement columns refreshed."""
+    d = np.load(path); tag = path.stem; out_dir = path.parent
+    setname, cond, rep = tag.rsplit("_rep", 1)[0].rsplit("_", 1)[0], tag.rsplit("_rep", 1)[0].rsplit("_", 1)[1], int(tag.rsplit("_rep", 1)[1])
+    bi, anchor = SETS[setname]; meta = dict(set=setname, b_i=bi, anchor=anchor, condition=cond, replicate=rep)
+    rec = [int(k) for k in d["frame_k"]]
+    fields = {"a": dict(zip(rec, d["a_frames"].astype(np.float64))), "i": dict(zip(rec, d["i_frames"].astype(np.float64)))}
+    n = int(d["grid"]); win = window(n, n); lattice_xy = np.column_stack([c_.ravel() for c_ in cell_centres(n, n)])
+    thr_fixed = {"a": float(d["thr_a"]), "i": float(d["thr_i_fixed"])}
+    out = measure_run(fields, rec, d["crit"], d["crit_a"], d["crit_i"], thr_fixed, win, lattice_xy, meta, rep)
+    frame_rows = out[0]
+    last = {r["channel"]: r for r in frame_rows if r["frame"] == rec[-1]}
+    runs_part = out_dir / "parts" / f"{tag}_runs.csv"
+    run_row = dict(next(csv.DictReader(open(runs_part)))) if runs_part.exists() else dict(**meta)
+    run_row.update(thr_i_halfmax_final=last["i"]["threshold"],
+                   **{f"{ch}_{k}": last[ch][k] for ch in ("a", "i") for k in ("cells_on", "coverage", "blobs_all", "blobs_real", "n_transient", "largest",
+                                                                             "area_real_median", "area_real_cv", "nn_cv_border", "csr_cv_border", "ecc_mean", "total")})
+    write_parts(out_dir, tag, *out, run_row)
+    print(f"remeasured {tag}", flush=True)
+
+
+def measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, meta, rep):
+    """All measurements of one run from its saved frames; returns the row lists for the parts files."""
+    frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ = [], [], [], [], [], [], []
     for ch, H in fields.items():
         csr = CsrCache(win, seed=rep * 7 + (0 if ch == "a" else 1))
         xy_seq, area_seq, t_seq = [], [], []
@@ -297,34 +379,10 @@ def run_one(job):
                 ff, fc = hex_power_spectrum(H[k])
                 fft_rows.append(dict(**meta, channel=ch, t=tr, field_mean=float(H[k].mean()), field_var=float(H[k].var()), **ff))
                 fft_curves += [dict(**meta, channel=ch, t=tr, **cv) for cv in fc]
-            if k >= 1 and tr in SNAP_T:
-                snaps[f"{ch}_t{tr}"] = H[k].astype(np.float32)
         tracks, births, deaths = track(xy_seq, area_seq, t_seq)
         rows, summ = track_rows(tracks, births, deaths, t_seq[-1], dict(**meta, channel=ch))
         track_rows_all += rows; track_summ.append(summ)
-    t_total = time.perf_counter() - t0
-    np.savez_compressed(out_dir / f"{tag}.npz", a_final=A[-1], i_final=I[-1], t_final=frame_time(len(A) - 1), steps=steps, step_returned=step,
-                        crit=crit, crit_a=crit_a, crit_i=crit_i, crit_t=crit_t, a_ss=a_ss, i_ss=i_ss, thr_a=thr_fixed["a"], thr_i_fixed=thr_fixed["i"],
-                        params=json.dumps(p), condition=json.dumps(c), spike_seed=str(spike_seed), np_seed=rep, grid=N, **snaps)
-    last = {r["channel"]: r for r in frame_rows if r["frame"] == rec[-1]}
-    last_i_level = last["i"]["threshold"]
-    run_row = dict(**meta, init_mode=c["init_mode"], n_points=c["n_points"], spike_value=c["spike_value"], set_peak_height=c["set_peak_height"],
-                   nucleation_rate=c["nucleation_rate"], spike_seed=spike_seed, np_seed=rep, a_ss=float(a_ss), i_ss=float(i_ss), thr_a=thr_fixed["a"],
-                   thr_i_fixed=thr_fixed["i"], thr_i_halfmax_final=last_i_level,
-                   grid=N, steps=steps, t_final=round(frame_time(len(A) - 1), 2), wall_engine_s=round(t_engine, 1), wall_total_s=round(t_total, 1),
-                   crit_final=float(crit[-1]), crit_min_after_t10=float(crit[5:].min()),
-                   **{f"{ch}_{k}": last[ch][k] for ch in ("a", "i") for k in ("cells_on", "coverage", "blobs_all", "blobs_real", "n_transient", "largest",
-                                                                             "area_real_median", "area_real_cv", "nn_cv_border", "csr_cv_border", "ecc_mean", "total")})
-    for name, rows in (("frames", frame_rows), ("gr", gr_rows), ("gr_curves", gr_curves), ("fft", fft_rows), ("fft_curves", fft_curves),
-                       ("tracks", track_rows_all), ("tracking", track_summ), ("runs", [run_row])):
-        if rows:
-            cols = list(dict.fromkeys(k for r in rows for k in r))        # ordered union: inhibitor rows carry extra i_halfmax_* columns
-            with open(out_dir / "parts" / f"{tag}_{name}.csv", "w", newline="") as f:
-                w = csv.DictWriter(f, fieldnames=cols, lineterminator="\n"); w.writeheader(); w.writerows(rows)
-    rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6
-    print(f"done {tag}: engine {t_engine:.0f} s, total {t_total:.0f} s, peak RSS {rss:.2f} GB, a: {last['a']['blobs_real']} real / {last['a']['n_transient']} transient, "
-          f"cov {last['a']['coverage']:.3f}; i: {last['i']['blobs_real']} real, cov {last['i']['coverage']:.3f}", flush=True)
-    return run_row
+    return frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ
 
 
 def jobs_for(sets):
@@ -387,6 +445,11 @@ if __name__ == "__main__":
                 print(f"[{k}/{len(jobs)}] {time.perf_counter() - t0:.0f} s elapsed", flush=True)
         collect()
     elif cmd == "collect":
+        collect()
+    elif cmd == "remeasure":
+        files = sorted(RES.glob("*.npz"))
+        with Pool(int(sys.argv[2]) if len(sys.argv) > 2 else 4) as pool:
+            pool.map(remeasure, files, chunksize=1)
         collect()
     elif cmd == "figures":
         figures([a for a in sys.argv[2:] if a in SETS] or ORDER)
