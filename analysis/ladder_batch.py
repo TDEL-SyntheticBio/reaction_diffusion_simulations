@@ -25,7 +25,7 @@ real domains = components of at least 6 cells, transients = smaller ones:
 
 Usage:
   python analysis/ladder_batch.py time                      # one representative run (bi25, nucl) with the full pipeline; prints timings
-  python analysis/ladder_batch.py run [workers] [set ...]   # the batch (default: all sets in ORDER); per-run parts are written as they finish
+  python analysis/ladder_batch.py run [workers] [set ...] [--conds c1,c2]   # the batch (default: all sets in ORDER, all conditions)
   python analysis/ladder_batch.py collect                   # concatenate results/ladder/parts/* into analysis/summaries/ladder_*.csv
   python analysis/ladder_batch.py remeasure [workers]       # recompute all measurements from the stored frames (after a code change), then collect
   python analysis/ladder_batch.py figures [set ...]         # hex-correct grids per set and channel from the saved snapshots
@@ -51,7 +51,15 @@ from analysis.seed_crowding import DT, SAVE_EVERY, central_seed, circuit, frame_
 N, T_END = 200, 600.0
 BA, GAMMA, NA, NI, DI, LEVEL = 5.0, 0.5, 10, 4, 20.0, 10.0
 SETS = {"bi13.5": (13.5, "below the Turing sliver"), "bi14.1": (14.1, "inside the Turing sliver"), "bi15": (15.0, "3B_big"),
-        "bi20": (20.0, "3L"), "bi25": (25.0, "2L_JAPI"), "bi30": (30.0, "3B_small"), "bi50": (50.0, "S8D_lowri")}
+        "bi20": (20.0, "3L"), "bi25": (25.0, "2L_JAPI"), "bi30": (30.0, "3B_small"), "bi50": (50.0, "S8D_lowri"),
+        # D_i sweep at the 2L set (b_i 25): the inhibitor range sqrt(1.5 D_i / gamma) is 3.87, 5.48 and 7.75 cells at D_i 5, 10, 20 (bi25)
+        "bi25_D5": (25.0, "2L_JAPI at D_i 5", 5.0), "bi25_D10": (25.0, "2L_JAPI at D_i 10", 10.0)}
+
+
+def set_params(name):
+    """(b_i, anchor, D_i) of a set; D_i defaults to the ladder's 20."""
+    v = SETS[name]
+    return v[0], v[1], (v[2] if len(v) > 2 else DI)
 ORDER = ["bi13.5", "bi14.1", "bi15", "bi25", "bi50", "bi20", "bi30"]      # the middle of the ladder runs last
 CONDS = {
     "seed1": dict(init_mode="activator_random_spikes", spike_value=LEVEL, n_points=1, set_peak_height=LEVEL, nucleation_rate=0.0),
@@ -281,13 +289,13 @@ def run_one(job):
 def _run_one(job):
     setname, cond, rep, out_dir = job
     from simulation_2D import run_coupled_hex
-    bi, anchor = SETS[setname]
-    p = circuit(BA, bi, GAMMA, NA, NI, DI); c = CONDS[cond]
+    bi, anchor, D = set_params(setname)
+    p = circuit(BA, bi, GAMMA, NA, NI, D); c = CONDS[cond]
     thr_fixed = {"a": 0.3 * p["act_prod_rate"], "i": 0.3 * p["inh_prod_rate"] / p["inh_decay_rate"]}
     steps = int(round(T_END / DT)) + 1
     out_dir.mkdir(parents=True, exist_ok=True); (out_dir / "parts").mkdir(exist_ok=True)
     tag = f"{setname}_{cond}_rep{rep}"
-    meta = dict(set=setname, b_i=bi, anchor=anchor, condition=cond, replicate=rep)
+    meta = dict(set=setname, b_i=bi, D_i=D, anchor=anchor, condition=cond, replicate=rep)
     spike_seed = ""
     np.random.seed(rep)
     orig_rng = np.random.default_rng
@@ -377,7 +385,7 @@ def remeasure(path):
 def _remeasure(path):
     d = np.load(path); tag = path.stem; out_dir = path.parent
     setname, cond, rep = tag.rsplit("_rep", 1)[0].rsplit("_", 1)[0], tag.rsplit("_rep", 1)[0].rsplit("_", 1)[1], int(tag.rsplit("_rep", 1)[1])
-    bi, anchor = SETS[setname]; meta = dict(set=setname, b_i=bi, anchor=anchor, condition=cond, replicate=rep)
+    bi, anchor, D = set_params(setname); meta = dict(set=setname, b_i=bi, D_i=D, anchor=anchor, condition=cond, replicate=rep)
     rec = [int(k) for k in d["frame_k"]]
     fields = {"a": dict(zip(rec, d["a_frames"].astype(np.float64))), "i": dict(zip(rec, d["i_frames"].astype(np.float64)))}
     n = int(d["grid"]); win = window(n, n); lattice_xy = np.column_stack([c_.ravel() for c_ in cell_centres(n, n)])
@@ -441,8 +449,8 @@ def parse_sets(args):
     return list(args) or ORDER
 
 
-def jobs_for(sets):
-    return [(s, cond, rep, RES) for s in sets for cond in CONDS for rep in REPS[cond]]
+def jobs_for(sets, conds=None):
+    return [(s, cond, rep, RES) for s in sets for cond in (conds or CONDS) for rep in REPS[cond]]
 
 
 def collect(out_dir=RES, prefix="ladder"):
@@ -467,7 +475,7 @@ def figures(sets):
     from analysis.plot_hex import save_panels
     rows_cond = [("seed1", 0), ("seed9", 1), ("seed36", 1), ("seed144", 1), ("random", 1), ("nucl", 1)]
     for s in sets:
-        bi, anchor = SETS[s]
+        bi, anchor, D = set_params(s)
         for ch, label in (("a", "activator"), ("i", "inhibitor")):
             fields, titles = [], []
             for cond, rep in rows_cond:
@@ -479,7 +487,7 @@ def figures(sets):
                     fields.append(d[f"{ch}_t{t}"].astype(float)); titles.append(f"{cond} rep{rep}, t={t}")
             if fields:
                 save_panels(fields, titles, SUMM / f"ladder_{s}_{ch}.png", ncols=len(FIG_T),
-                            suptitle=f"{s} ({anchor}): b_a=5, b_i={bi:g}, n=10/4, D_i=20, gamma=0.5; 200x200; {label}, hex-correct, colour 0..max")
+                            suptitle=f"{s} ({anchor}): b_a=5, b_i={bi:g}, n=10/4, D_i={D:g}, gamma=0.5; 200x200; {label}, hex-correct, colour 0..max")
                 print(f"ladder_{s}_{ch}.png")
 
 
@@ -491,9 +499,16 @@ if __name__ == "__main__":
         r = run_one(("bi25", "nucl", 1, out))
         print(f"wall {time.perf_counter() - t0:.0f} s for one 200x200 nucleation run with the full pipeline (engine {r['wall_engine_s']} s)")
     elif cmd == "run":
-        n_workers = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2].isdigit() else 4
-        sets = parse_sets(sys.argv[3:] if len(sys.argv) > 2 and sys.argv[2].isdigit() else sys.argv[2:])
-        jobs = [j for j in jobs_for(sets) if not ((RES / f"{j[0]}_{j[1]}_rep{j[2]}.npz").exists() and (PARTS / f"{j[0]}_{j[1]}_rep{j[2]}_runs.csv").exists())]
+        args = sys.argv[2:]
+        conds = None
+        if "--conds" in args:                       # e.g. --conds seed1,seed36,random,nucl
+            k = args.index("--conds"); conds = args[k + 1].split(","); args = args[:k] + args[k + 2:]
+            bad = [c for c in conds if c not in CONDS]
+            if bad:
+                raise SystemExit(f"unknown condition(s) {bad}; known: {list(CONDS)}")
+        n_workers = int(args[0]) if args and args[0].isdigit() else 4
+        sets = parse_sets(args[1:] if args and args[0].isdigit() else args)
+        jobs = [j for j in jobs_for(sets, conds) if not ((RES / f"{j[0]}_{j[1]}_rep{j[2]}.npz").exists() and (PARTS / f"{j[0]}_{j[1]}_rep{j[2]}_runs.csv").exists())]
         print(f"{len(jobs)} runs on {n_workers} workers: sets {sets} (finished runs are skipped)", flush=True)
         t0 = time.perf_counter()
         try:
