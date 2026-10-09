@@ -188,5 +188,6 @@ Python 3.13; `scipy`, `matplotlib`, `joblib`, `tqdm` must be pip-installed each 
 | `single_domain_halo.py`, `isolated_seed_fate.py`, `arrest_onset_sweep.py`, `nucleus_threshold.py` | isolated-domain experiments |
 | `plot_hex.py` | the only hex-correct renderer in the repo |
 | `seed_crowding.py`, `lone_domain_classifier.py`, `regime_map.py`, `turing_sliver_check.py` | seed-crowding experiments (report §10–11), lone-domain classifier, (b_a, b_i) regime map, Turing-sliver check |
+| `ladder_batch.py`, `ladder_summary_fig.py`, `snapshot_areas.py` | the 200×200 b_i ladder (report §13: per-frame measures of both channels, g(r), hex-correct spectra, tracking, `remeasure` from stored frames), its summary figure, per-domain areas of stored snapshots |
 
 Raw runs go to `results/` (gitignored); summary CSVs and figures to `analysis/summaries/`.
