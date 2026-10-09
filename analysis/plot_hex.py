@@ -40,4 +40,7 @@ def save_panels(fields, titles, path, cmaps=None, suptitle=None, ncols=None):
             ax.axis("off")
     if suptitle:
         fig.suptitle(suptitle, fontsize=10)
-    fig.tight_layout(); fig.savefig(path, dpi=160); plt.close(fig)
+        fig.tight_layout(rect=(0, 0, 1, 1 - 0.4 / fig.get_figheight()))   # keep the suptitle clear of the first row's titles
+    else:
+        fig.tight_layout()
+    fig.savefig(path, dpi=160); plt.close(fig)

@@ -96,13 +96,19 @@ def _job(args):
 
 
 EXPECTED = {"bi5": "spreading", "bi7": "spreading", "bi8": "divides", "bi9": "unstable/divides", "bi10": "unstable/divides", "bi11": "unstable (slow)", "bi12": "stable", "bi14": "stable"}
+EXPECTED.update({s: "stable" for s in ("2L_JAPI", "3L", "3B_big", "3B_small", "3H_lowDi", "S8D_lowri")})   # lone-seed fates of REPORT §11
+EXPECTED.update({"3B_labyrinth": "spreading", "2L_JA": "spreading"})
 
 if __name__ == "__main__":
-    if sys.argv[1] == "validate":
-        jobs = [(f"bi{bi}", circuit(5, bi, 0.5, 3, 3, 10)) for bi in (5, 7, 8, 9, 10, 11, 12, 14)]
+    if sys.argv[1] in ("validate", "expmatched"):
+        if sys.argv[1] == "validate":      # Fig 1C line, against the §10 fates
+            jobs = [(f"bi{bi}", circuit(5, bi, 0.5, 3, 3, 10)) for bi in (5, 7, 8, 9, 10, 11, 12, 14)]
+        else:                              # the eight experiment-matched sets of REPORT §11
+            from analysis.seed_crowding import GROUPS
+            jobs = list(GROUPS["expmatched"]["sets"].items())
         with Pool(2) as pool:
             out = pool.map(_job, jobs, chunksize=1)
-        with open(ROOT / "analysis" / "summaries" / "lone_domain_classifier_validation.csv", "w", newline="") as f:
+        with open(ROOT / "analysis" / "summaries" / f"lone_domain_classifier_{'validation' if sys.argv[1] == 'validate' else 'expmatched'}.csv", "w", newline="") as f:
             cols = ["name", "expected", "outcome", "area", "blobs", "coverage", "sigma", "rising", "t_div", "dev_start", "dev_mid", "dev_end", "t_relax", "t_probe"]
             w = csv.DictWriter(f, fieldnames=cols, lineterminator="\n", extrasaction="ignore"); w.writeheader(); w.writerows(out)
         print(f"{'set':<6}{'expected':<17}{'outcome':<11}{'area':>6}{'blobs':>6}{'sigma':>9}{'rising':>7}{'t_div':>7}{'dev start->mid->end':>30}")
