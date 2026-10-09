@@ -167,8 +167,58 @@ def plot():
     print("regime_map.png written")
 
 
+# Long unperturbed isolated-seed runs for the marginal "unstable" squares (sigma 0.005-0.03) of the map, to tell a slow
+# division from a slow hop between neighbouring arrested shapes: classifier seeding (19-cell disc at level r_a, 81x81), to t = 1500,
+# area, blob count and per-cell change every 50 t.  Output: analysis/summaries/regime_map_marginal.csv
+MARGINAL = [("n4_4_D10", 5, 10), ("n4_4_D10", 5, 21.5), ("n4_4_D10", 4, 14.7), ("n10_4_D20", 5, 46.4), ("n3_3_D10", 3, 3.16), ("n10_4_D10", 5, 31.6)]
+MARGINAL_OUT = ROOT / "analysis" / "summaries" / "regime_map_marginal.csv"
+
+
+def _long_run(pt, n=81, t_end=1500.0, every=50.0):
+    from analysis.hexgeom import cell_centres, label_components, neighbor_arrays, rasterize_discs
+    from simulation_2D import _vectorized_step
+    from analysis.lone_domain_classifier import DT
+    panel, ba, bi = pt
+    na, ni, D = PANELS[panel]
+    p = circuit(ba, bi, GAMMA, na, ni, D)
+    nbr = neighbor_arrays(n, n); x, y = cell_centres(n, n); cx, cy = x[n // 2, n // 2], y[n // 2, n // 2]
+    thr = 0.3 * p["act_prod_rate"]
+    a = np.where(rasterize_discs(n, n, np.array([[cx, cy]]), 2.5), p["act_prod_rate"], 0.0); i = np.zeros_like(a)
+    traj, prev = [], None
+    for step in range(1, int(round(t_end / DT)) + 1):
+        a, i = _vectorized_step(a, i, DT, 1.0, p, "juxtacrine", *nbr)
+        if step % int(round(every / DT)) == 0:
+            m = a > thr; area = int(m.sum()); nb = label_components(m)[1] if area else 0
+            ch = float((np.abs(a - prev[0]).sum() + np.abs(i - prev[1]).sum()) / (2 * n * n)) if prev is not None else np.nan
+            traj.append((step * DT, area, nb, ch)); prev = (a.copy(), i.copy())
+            if area == 0 or m[0].any() or m[-1].any() or m[:, 0].any() or m[:, -1].any():
+                break
+    t_last, area_end, blobs_end, ch_end = traj[-1]
+    fate = "dies" if area_end == 0 else ("spreads to border" if t_last < t_end else ("divides" if blobs_end > 1 else "one domain"))
+    area0 = traj[0][1]
+    t_change = next((t for t, A, b, c in traj if A != area0 or b != 1), np.nan)   # first frame whose area or blob count differs from t = 50
+    return dict(panel=panel, n_a=na, n_i=ni, D_i=D, b_a=ba, b_i=bi, fate=fate, area_t50=area0, t_first_change=t_change, area_end=area_end,
+                blobs_end=blobs_end, change_end=ch_end, t_end=t_last,
+                trajectory=" ".join(f"{int(t)}:{A}/{b}" for t, A, b, c in traj))
+
+
+def marginal(n_workers=4):
+    rows = []
+    with Pool(n_workers) as pool:
+        for r in pool.imap_unordered(_long_run, MARGINAL):
+            r["sigma"] = next((float(x["sigma"]) for x in csv.DictReader(open(OUT)) if x["panel"] == r["panel"] and float(x["b_a"]) == r["b_a"] and float(x["b_i"]) == r["b_i"]), np.nan) if OUT.exists() else np.nan
+            rows.append(r); print("done", {k: r[k] for k in ("panel", "b_a", "b_i", "sigma", "fate", "area_t50", "t_first_change", "area_end", "blobs_end")}, flush=True)
+    rows.sort(key=lambda r: (list(PANELS).index(r["panel"]), r["b_a"], r["b_i"]))
+    cols = ["panel", "n_a", "n_i", "D_i", "b_a", "b_i", "sigma", "fate", "area_t50", "t_first_change", "area_end", "blobs_end", "change_end", "t_end", "trajectory"]
+    with open(MARGINAL_OUT, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=cols, lineterminator="\n"); w.writeheader(); w.writerows(rows)
+    print(f"wrote {MARGINAL_OUT}", flush=True)
+
+
 if __name__ == "__main__":
-    if sys.argv[1] == "run":
+    if sys.argv[1] == "marginal":
+        marginal(int(sys.argv[2]) if len(sys.argv) > 2 else 4)
+    elif sys.argv[1] == "run":
         run(int(sys.argv[2]) if len(sys.argv) > 2 else 4)
     elif sys.argv[1] == "background":
         background()
