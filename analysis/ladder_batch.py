@@ -461,10 +461,14 @@ def collect(out_dir=RES, prefix="ladder"):
             with open(f) as fh:
                 rd = csv.DictReader(fh)
                 for r in rd:
+                    if "set" in r and r.get("D_i", "") in ("", None):  # parts written before the D_i column existed
+                        r["D_i"] = set_params(r["set"])[2]
                     rows.append(r)
                 for ccol in rd.fieldnames or []:
                     if ccol not in cols:
                         cols.append(ccol)
+                if rows and "D_i" in rows[-1] and "D_i" not in cols:
+                    cols.insert(cols.index("b_i") + 1 if "b_i" in cols else len(cols), "D_i")
         if rows:
             with open(SUMM / f"{prefix}_{name}.csv", "w", newline="") as fh:
                 w = csv.DictWriter(fh, fieldnames=cols, lineterminator="\n"); w.writeheader(); w.writerows(rows)

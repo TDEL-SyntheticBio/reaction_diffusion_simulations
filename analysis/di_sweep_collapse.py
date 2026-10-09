@@ -6,7 +6,8 @@ bi25 (the ladder batch, D_i 20), all 200x200 to t = 600 under the ladder driver;
 Lengths at t = 600, in cells and divided by lambda_i, per set and condition (range over the three replicates):
   R_lone      equivalent radius of the lone seed's arrested disc, sqrt(area * sqrt(3)/2 / pi)
   nn_mean     mean nearest-neighbour spacing of real-domain centroids (ladder_frames.csv)
-  hole        g(r) hole radius, per run (ladder_gr.csv) and pooled over the three replicates (PooledG on the t = 600 snapshots)
+  hole        g(r) hole radius, per run (ladder_gr.csv) and pooled over the three replicates (PooledG on the t = 600 real-domain
+              centroids under the same persistence mask as the per-run rows: a > 0.3 r_a at t = 600 and at t = 590)
   peak1_r     first g(r) peak position, per run and pooled (NaN where the 3-sigma / 20-pair gate is not passed)
   R_eq_mean   mean over real domains of the per-domain equivalent radius (from the areas lists); R_eq_median likewise
   fft_wavelength  hex-correct power-spectrum peak wavelength of the activator field (ladder_fft.csv); its relative FWHM is kept as a non-length extra
@@ -76,7 +77,10 @@ def main():
                 # pooled g(r) over the three replicates on the stored t = 600 activator snapshots
                 pg = None
                 for r in sorted(f.replicate):
-                    d = np.load(RES / f"{s}_{cond}_rep{int(r)}.npz"); mask = d["a_t600"] > 1.5
+                    d = np.load(RES / f"{s}_{cond}_rep{int(r)}.npz"); thr = float(d["thr_a"]) if "thr_a" in d else 1.5
+                    ft = d["frame_t"]; k600 = int(np.argmin(np.abs(ft - 600.01))); k590 = int(np.argmin(np.abs(ft - 590.01)))
+                    assert abs(ft[k600] - 600.01) < 0.05 and abs(ft[k590] - 590.01) < 0.05
+                    mask = (d["a_frames"][k600] > thr) & (d["a_frames"][k590] > thr)  # persistence mask, as ladder_frames.csv
                     tab = component_table(mask, min_size=6); xy = np.column_stack([tab["cx"], tab["cy"]])
                     if pg is None:
                         pg = PooledG(r_max=40.0, dr=0.5, n_null=200, seed=1, lattice_xy=lattice_xy if np.median(tab["area"]) < 10 else None)
@@ -143,12 +147,17 @@ def plots(out, curves):
         for sp in ("top", "right"):
             ax.spines[sp].set_visible(False)
         for cond in (["seed1"] if q == "R_lone" else ["seed36", "random", "nucl"]):
-            r = out[(out.condition == cond) & (out.quantity == q)].sort_values("D_i")
-            if r.empty:
+            r = out[(out.condition == cond) & (out.quantity == q) & (out.set != "3H_lowDi_141")].sort_values("D_i")
+            if r.empty or not np.isfinite(r.ratio_mean).any():
                 continue
             x = list(r.D_i); y = list(r.ratio_mean); lo = list(r.ratio_min); hi = list(r.ratio_max)
             ax.plot(x, y, "-o", color=col[cond], linewidth=2, markersize=5, markerfacecolor="#fcfcfb", markeredgewidth=1.6, label=label[cond])
             ax.fill_between(x, lo, hi, color=col[cond], alpha=0.15, linewidth=0)
+        if q == "R_lone":
+            c = out[(out.set == "3H_lowDi_141") & (out.quantity == q)]
+            if not c.empty:
+                ax.plot(c.D_i, c.ratio_mean, marker="x", linestyle="none", color="#52514e", markersize=8, markeredgewidth=1.6,
+                        label="3H_lowDi, 141x141 (grid-size control)")
         ax.set_xscale("log"); ax.set_xticks(Ds); ax.set_xticklabels([f"{d:g}" for d in Ds]); ax.minorticks_off()
         ax.set_xlabel("D_i", fontsize=9, color="#52514e"); ax.set_ylabel("length / lambda_i", fontsize=9, color="#52514e")
         ax.set_title(title, fontsize=10, loc="left"); ax.set_ylim(bottom=0); ax.legend(fontsize=8, frameon=False)
@@ -168,7 +177,8 @@ def plots(out, curves):
                 r, g, summ = curves[(s, cond)]
                 ax.plot(r / LAM[s] if scaled else r, g, color=dcol[D], linewidth=1.8,
                         label=f"D_i {D:g} (lambda {LAM[s]:.2f}; {int(summ['total_pairs'])} pairs)")
-            ax.axhline(1.0, color="#c3c2b7", linewidth=1); ax.set_ylim(0, 3.2)
+            gmax = max([float(np.nanmax(curves[(s, cond)][1])) for s in SETS if (s, cond) in curves] + [3.0])
+            ax.axhline(1.0, color="#c3c2b7", linewidth=1); ax.set_ylim(0, 1.06 * gmax)
             ax.set_xlim(0, 40 / LAM["bi25_D5"] if scaled else 40)
             ax.set_xlabel("r / lambda_i" if scaled else "r (cells)", fontsize=9, color="#52514e")
             ax.set_ylabel("g(r), pooled over 3 replicates", fontsize=9, color="#52514e")
