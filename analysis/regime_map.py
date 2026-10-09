@@ -33,18 +33,21 @@ OUT = ROOT / "analysis" / "summaries" / "regime_map.csv"
 
 # ---- closed forms (CLAUDE.md s10) --------------------------------------------------------------------
 def hill_terms(a, i, na, ni):
-    A = a ** na if a > 0 else 0.0; I = i ** ni if i > 0 else 0.0
+    a, i = np.asarray(a, dtype=float), np.asarray(i, dtype=float)      # scalars or arrays
+    A = np.where(a > 0, np.abs(a) ** na, 0.0); I = np.where(i > 0, np.abs(i) ** ni, 0.0)
     return A, I
 
 
 def activated_states(ba, bi, g, na, ni):
     """Positive roots of H = f(A H, I H) with A = b_a, I = b_i/gamma; returns list of (a0, i0, alpha, G, tau0)."""
     A, I = ba, bi / g
-    Hs = np.linspace(1e-6, 1 - 1e-6, 40001)   # misses saturated roots with H* > 1 - 1e-6 (e.g. b_i = 0: H* = 1 - 1e-7; REPORT §11)
+    # H grid: uniform on (0, 1) plus a geometric approach to H = 1, because saturated activated states have
+    # 1 - H* ~ (1 + I^n_i) / A^n_a, i.e. below 1e-6 at n_a = 10 for b_a >= ~5.3 at low b_i (and 1e-7 at b_i = 0, b_a = 5).
+    Hs = np.unique(np.concatenate([np.linspace(1e-6, 1 - 1e-6, 40001), 1 - np.logspace(-6, -16, 2001)]))
     def gfun(h):
         Ah, Ih = hill_terms(A * h, I * h, na, ni)
         return Ah / (1 + Ah + Ih) - h
-    gv = np.array([gfun(h) for h in Hs])
+    gv = gfun(Hs)
     roots = []
     for k in np.nonzero(np.sign(gv[:-1]) != np.sign(gv[1:]))[0]:
         lo, hi = Hs[k], Hs[k + 1]
@@ -90,6 +93,19 @@ def background():
         print(panel, {c: sum(r["closed_form"] == c for r in rows if r["panel"] == panel) for c in ("no activated state", "uniform ON", "Turing", "linearly stable")}, flush=True)
     with open(BG_OUT, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["panel", "b_a", "b_i", "closed_form", "alpha", "G"], lineterminator="\n"); w.writeheader(); w.writerows(rows)
+
+
+def refresh_closed_form():
+    """Rewrite the closed_form / alpha / G columns of regime_map.csv from closed_form_class (the classifier outcomes are untouched)."""
+    if not OUT.exists():
+        return
+    rows = list(csv.DictReader(open(OUT)))
+    for r in rows:
+        cls, alpha, G = closed_form_class(float(r["b_a"]), float(r["b_i"]), GAMMA, int(r["n_a"]), int(r["n_i"]), float(r["D_i"]))
+        r["closed_form"], r["alpha"], r["G"] = cls, alpha, G
+    with open(OUT, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()), lineterminator="\n"); w.writeheader(); w.writerows(rows)
+    print(f"refreshed closed-form columns of {OUT}", flush=True)
 
 
 def _job(args):
@@ -170,7 +186,10 @@ def plot():
 # Long unperturbed isolated-seed runs for the marginal "unstable" squares (sigma 0.005-0.03) of the map, to tell a slow
 # division from a slow hop between neighbouring arrested shapes: classifier seeding (19-cell disc at level r_a, 81x81), to t = 1500,
 # area, blob count and per-cell change every 50 t.  Output: analysis/summaries/regime_map_marginal.csv
-MARGINAL = [("n4_4_D10", 5, 10), ("n4_4_D10", 5, 21.5), ("n4_4_D10", 4, 14.7), ("n10_4_D20", 5, 46.4), ("n3_3_D10", 3, 3.16), ("n10_4_D10", 5, 31.6)]
+MARGINAL = [("n4_4_D10", 2.5, 3.16), ("n4_4_D10", 5, 10), ("n4_4_D10", 7, 14.7), ("n4_4_D10", 10, 21.5), ("n4_4_D10", 15, 31.6),      # 31-cell "unstable"
+            ("n4_4_D10", 4, 14.7), ("n4_4_D10", 5, 21.5), ("n4_4_D10", 7, 31.6), ("n4_4_D10", 10, 46.4), ("n4_4_D10", 15, 68.1), ("n4_4_D10", 20, 100),   # 7-cell "unstable"
+            ("n3_3_D10", 3, 3.16),                                                                      # the n 3/3 "unstable" square
+            ("n10_4_D20", 5, 46.4), ("n10_4_D10", 5, 31.6), ("n10_4_D10", 7, 68.1)]                     # 10/4: the "unstable" square and the two largest |sigma| stable ones
 MARGINAL_OUT = ROOT / "analysis" / "summaries" / "regime_map_marginal.csv"
 
 
@@ -221,6 +240,6 @@ if __name__ == "__main__":
     elif sys.argv[1] == "run":
         run(int(sys.argv[2]) if len(sys.argv) > 2 else 4)
     elif sys.argv[1] == "background":
-        background()
+        background(); refresh_closed_form()
     elif sys.argv[1] == "plot":
         plot()
