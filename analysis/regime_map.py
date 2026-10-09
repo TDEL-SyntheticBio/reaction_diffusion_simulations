@@ -117,6 +117,14 @@ def run(n_workers=4):
     print(f"wrote {OUT}", flush=True)
 
 
+# Published sets drawn on the map (open circles with a label): REPORT §10 (Fig 1C line) and §11 (experiment-matched).
+PUBLISHED = {
+    "n3_3_D10": [(5, 5, "1", "Fig 1C b_i=5: replicating"), (5, 9, "2", "Fig 1C b_i=9: divides"), (5, 12, "3", "Fig 1C b_i=12: arrested")],
+    "n10_4_D20": [(5, 15, "4", "3B_big: lone disc arrested, field worms"), (6, 15, "5", "3B_labyrinth: labyrinth"), (5, 20, "6", "3L: arrested"),
+                  (5, 25, "7", "2L_JAPI: arrested"), (5, 30, "8", "3B_small: arrested"), (5, 50, "9", "S8D_lowri: arrested")],
+}
+
+
 def plot():
     import matplotlib
     matplotlib.use("Agg")
@@ -144,13 +152,18 @@ def plot():
             ba, bi = float(r["b_a"]), float(r["b_i"])
             ax.scatter(bi, ba, s=110, c=colors.get(r["outcome"], "k"), marker="s", edgecolors="k", linewidths=0.3)
             ax.text(bi, ba, cf_marker.get(r["closed_form"], "?"), ha="center", va="center", fontsize=6)
+        for ba, bi, num, _ in PUBLISHED.get(panel, []):
+            ax.scatter(bi, ba, s=260, facecolors="none", edgecolors="k", linewidths=1.2, zorder=5)
+            ax.annotate(num, (bi, ba), xytext=(0, 9), textcoords="offset points", fontsize=7, ha="center", zorder=6)
         ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlabel("b_i"); ax.set_ylabel("b_a")
         ax.set_title(f"n_a={na}, n_i={ni}, D_i={D:g}, gamma={GAMMA}", fontsize=9)
     handles = [plt.Line2D([], [], marker="s", ls="", color=c, markeredgecolor="k", label=k) for k, c in colors.items()]
     handles += [plt.Rectangle((0, 0), 1, 1, color=c, label="background: " + k) for k, c in bg_colors.items() if k != "no activated state"]
-    fig.legend(handles=handles, loc="lower center", ncol=5, fontsize=7, frameon=False, bbox_to_anchor=(0.5, -0.04))
-    fig.suptitle("Lone-domain fate (squares) over the closed-form linear class of the activated state (background; white = none)", fontsize=9)
-    fig.tight_layout(rect=(0, 0.05, 1, 0.95)); fig.savefig(ROOT / "analysis" / "summaries" / "regime_map.png", dpi=160); plt.close(fig)
+    fig.legend(handles=handles, loc="lower center", ncol=len(handles), fontsize=7, frameon=False, bbox_to_anchor=(0.5, 0.045))
+    key = "; ".join(f"{num} {label}" for pts in PUBLISHED.values() for _, _, num, label in pts)
+    fig.text(0.5, 0.012, "circles, published sets (REPORT §10, §11): " + key, ha="center", fontsize=6.5)
+    fig.suptitle("Lone-domain fate (squares; letter = closed-form class of the activated state) over the closed-form background (white = no activated state)", fontsize=9)
+    fig.tight_layout(rect=(0, 0.09, 1, 0.95)); fig.savefig(ROOT / "analysis" / "summaries" / "regime_map.png", dpi=160); plt.close(fig)
     print("regime_map.png written")
 
 
