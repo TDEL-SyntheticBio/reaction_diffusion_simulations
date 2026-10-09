@@ -40,7 +40,7 @@ def hill_terms(a, i, na, ni):
 def activated_states(ba, bi, g, na, ni):
     """Positive roots of H = f(A H, I H) with A = b_a, I = b_i/gamma; returns list of (a0, i0, alpha, G, tau0)."""
     A, I = ba, bi / g
-    Hs = np.linspace(1e-6, 1 - 1e-6, 40001)
+    Hs = np.linspace(1e-6, 1 - 1e-6, 40001)   # misses saturated roots with H* > 1 - 1e-6 (e.g. b_i = 0: H* = 1 - 1e-7; REPORT §11)
     def gfun(h):
         Ah, Ih = hill_terms(A * h, I * h, na, ni)
         return Ah / (1 + Ah + Ih) - h
