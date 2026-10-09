@@ -4,7 +4,9 @@ six initial conditions per set as in REPORT section 11, 200x200, to t = 600, fra
 disabled. Everything is recorded; nothing is interpreted here.
 
 Sets (b_i): 13.5 (below the Turing sliver), 14.1 (inside the engine-confirmed sliver), 15 (3B_big), 20 (3L), 25 (2L_JAPI),
-30 (3B_small), 50 (S8D_lowri). Conditions: seed1 (one activator-only cell at level 10 near the centre), seed9/36/144
+30 (3B_small), 50 (S8D_lowri). Note: at b_i = 13.5 and 14.1 the engine's solver finds an activated state (a_ss 4.58 / 4.35), so there
+the nucleation kick is 2 a_ss = 9.2 / 8.7 gated at a < a_ss, while the five sets without a state use the fallback a_ss = spike_value = 2
+(kick 4, gate a < 2); the run table records a_ss_source, nucl_kick and nucl_gate. Nothing is forced to a common kick. Conditions: seed1 (one activator-only cell at level 10 near the centre), seed9/36/144
 (activator_random_spikes at level 10, placement seed overridden per replicate), random (random_uniform_over0, U(0, 2)),
 nucl (all_off, nucleation 0.01, kick 2 a_ss); replicates 1-3 for the field conditions, 0 for seed1.
 
@@ -125,7 +127,7 @@ def measure_frame(F, prev_mask, thr, win, csr):
                 blobs_all=int(len(areas_all)), blobs_real=int(len(areas_real)), n_transient=int(len(areas_all) - len(areas_real)),
                 largest=int(areas_all[0]) if len(areas_all) else 0, total=float(F.sum()), field_max=float(F.max()),
                 **area_stats(areas_real, "area_real"), **area_stats(areas_all, "area_all"),
-                nn_mean=float(d.mean()) if d.size else np.nan, nn_sd=float(d.std(ddof=1)) if d.size > 1 else np.nan,
+                nn_mean=float(d.mean()) if d.size else np.nan, nn_sd=float(d.std()) if d.size > 1 else np.nan,     # population SD: nn_cv = nn_sd / nn_mean, as in csr_reference_cv
                 nn_cv=float(d.std() / d.mean()) if d.size > 1 and d.mean() > 0 else np.nan, nn_cv_border=cvb, nn_n_border=nb,
                 csr_cv=csr_plain, csr_cv_border=csr_border,
                 ecc_mean=float(ecc.mean()) if ecc.size else np.nan, ecc_sd=float(ecc.std(ddof=1)) if ecc.size > 1 else np.nan,
@@ -302,8 +304,8 @@ def _run_one(job):
     last = {r["channel"]: r for r in frame_rows if r["frame"] == rec[-1]}
     last_i_level = last["i"]["threshold"]
     run_row = dict(**meta, init_mode=c["init_mode"], n_points=c["n_points"], spike_value=c["spike_value"], set_peak_height=c["set_peak_height"],
-                   nucleation_rate=c["nucleation_rate"], spike_seed=spike_seed, np_seed=rep, a_ss=float(a_ss), i_ss=float(i_ss), thr_a=thr_fixed["a"],
-                   thr_i_fixed=thr_fixed["i"], thr_i_halfmax_final=last_i_level,
+                   nucleation_rate=c["nucleation_rate"], spike_seed=spike_seed, np_seed=rep, a_ss=float(a_ss), i_ss=float(i_ss), **protocol_cols(a_ss, c),
+                   thr_a=thr_fixed["a"], thr_i_fixed=thr_fixed["i"], thr_i_halfmax_final=last_i_level,
                    grid=N, steps=steps, t_final=round(frame_time(len(A) - 1), 2), wall_engine_s=round(t_engine, 1), wall_save_s=round(t_saved - t_engine, 1),
                    wall_total_s=round(t_total, 1), crit_final=float(crit[-1]), crit_min_after_t10=float(crit[5:].min()),
                    **{f"{ch}_{k}": last[ch][k] for ch in ("a", "i") for k in ("cells_on", "coverage", "blobs_all", "blobs_real", "n_transient", "largest",
@@ -313,6 +315,13 @@ def _run_one(job):
     print(f"done {tag}: engine {t_engine:.0f} s, total {t_total:.0f} s, peak RSS {rss:.2f} GB, a: {last['a']['blobs_real']} real / {last['a']['n_transient']} transient, "
           f"cov {last['a']['coverage']:.3f}; i: {last['i']['blobs_real']} real, cov {last['i']['coverage']:.3f}", flush=True)
     return run_row
+
+
+def protocol_cols(a_ss, c):
+    """What the engine actually does with the nucleation and spike settings: kick 2 a_ss gated at a < a_ss; a_ss from the solver or the fallback."""
+    fallback = abs(float(a_ss) - float(c["spike_value"])) < 1e-12
+    return dict(a_ss_source="fallback (= spike_value)" if fallback else "solver", nucl_kick=2 * float(a_ss) if c["nucleation_rate"] > 0 else 0.0,
+                nucl_gate=float(a_ss) if c["nucleation_rate"] > 0 else np.nan)
 
 
 def write_parts(out_dir, tag, frame_rows, gr_rows, gr_curves, fft_rows, fft_curves, track_rows_all, track_summ, run_row):
@@ -339,7 +348,7 @@ def remeasure(path):
     last = {r["channel"]: r for r in frame_rows if r["frame"] == rec[-1]}
     runs_part = out_dir / "parts" / f"{tag}_runs.csv"
     run_row = dict(next(csv.DictReader(open(runs_part)))) if runs_part.exists() else dict(**meta)
-    run_row.update(thr_i_halfmax_final=last["i"]["threshold"],
+    run_row.update(**protocol_cols(float(d["a_ss"]), json.loads(str(d["condition"]))), thr_i_halfmax_final=last["i"]["threshold"],
                    **{f"{ch}_{k}": last[ch][k] for ch in ("a", "i") for k in ("cells_on", "coverage", "blobs_all", "blobs_real", "n_transient", "largest",
                                                                              "area_real_median", "area_real_cv", "nn_cv_border", "csr_cv_border", "ecc_mean", "total")})
     write_parts(out_dir, tag, *out, run_row)
@@ -352,11 +361,12 @@ def measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, m
     for ch, H in fields.items():
         csr = CsrCache(win, seed=rep * 7 + (0 if ch == "a" else 1))
         xy_seq, area_seq, t_seq = [], [], []
+        i_floor = thr_fixed["i"] / 30.0          # 0.01 r_i / gamma: an inhibitor field below this is off (no half-max segmentation of a decayed field)
         def level(k):      # activator: fixed 0.3 r_a; inhibitor: half of the frame's own maximum (persistence uses the previous frame's own level)
-            return thr_fixed["a"] if ch == "a" else 0.5 * float(H[k].max())
+            return thr_fixed["a"] if ch == "a" else (0.5 * float(H[k].max()) if H[k].max() >= i_floor else np.inf)
         for k in rec:
             t = frame_time(k); tr = round(t)
-            kp = k - FRAME_EVERY if k - FRAME_EVERY >= 1 else None
+            kp = k - FRAME_EVERY if k - FRAME_EVERY >= FRAME_EVERY + 1 else None      # partner = the t - 10 frame; the t = 10 row has none (t = 0.01 is pre-pattern)
             m, comp, xy = measure_frame(H[k], H[kp] > level(kp) if kp is not None else None, level(k), win, csr)
             row = dict(**meta, channel=ch, threshold=level(k), threshold_kind="fixed 0.3 r_a" if ch == "a" else "half of frame max", frame=k, t=round(t, 2),
                        persistence=int(kp is not None), crit=float(crit[k - 1]) if k >= 1 else np.nan,
@@ -368,7 +378,7 @@ def measure_run(fields, rec, crit, crit_a, crit_i, thr_fixed, win, lattice_xy, m
                 row.update(i_fixed_level=thr_fixed["i"], i_fixed_cells=int(fm.sum()), i_fixed_coverage=float(fm.mean()), i_fixed_blobs=int(len(fc["area"])),
                            i_fixed_blobs_real=int((fc["area"] >= MIN_REAL).sum()), i_fixed_largest=int(fc["area"].max()) if fc["area"].size else 0)
             frame_rows.append(row)
-            if k >= 1:
+            if k >= FRAME_EVERY + 1:                 # tracking from t = 10 on
                 xy_seq.append(xy); area_seq.append(comp["area"][comp["area"] >= MIN_REAL] if comp["area"].size else np.zeros(0)); t_seq.append(tr)
             if k >= 1 and tr in GR_T:
                 med = m["area_real_median"]
@@ -437,13 +447,15 @@ if __name__ == "__main__":
     elif cmd == "run":
         n_workers = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2].isdigit() else 4
         sets = [a for a in sys.argv[2:] if a in SETS] or ORDER
-        jobs = jobs_for(sets)
-        print(f"{len(jobs)} runs on {n_workers} workers: sets {sets}", flush=True)
+        jobs = [j for j in jobs_for(sets) if not ((RES / f"{j[0]}_{j[1]}_rep{j[2]}.npz").exists() and (PARTS / f"{j[0]}_{j[1]}_rep{j[2]}_runs.csv").exists())]
+        print(f"{len(jobs)} runs on {n_workers} workers: sets {sets} (finished runs are skipped)", flush=True)
         t0 = time.perf_counter()
-        with Pool(n_workers) as pool:
-            for k, r in enumerate(pool.imap_unordered(run_one, jobs, chunksize=1), 1):
-                print(f"[{k}/{len(jobs)}] {time.perf_counter() - t0:.0f} s elapsed", flush=True)
-        collect()
+        try:
+            with Pool(n_workers) as pool:
+                for k, r in enumerate(pool.imap_unordered(run_one, jobs, chunksize=1), 1):
+                    print(f"[{k}/{len(jobs)}] {time.perf_counter() - t0:.0f} s elapsed" + (f"  ERROR in {r['set']}_{r['condition']}_rep{r['replicate']}" if "error" in r else ""), flush=True)
+        finally:
+            collect()
     elif cmd == "collect":
         collect()
     elif cmd == "remeasure":
