@@ -1,0 +1,389 @@
+set,b_i,D_i,n_a,n_i,anchor,condition,replicate,channel,point,frame,t,reached,own_channel_frame,own_channel_t,lambda_i,n_points,null,hole,peak1_r,peak1_g,peak1_pairs,trough_r,trough_g,peak2_r,peak2_g,peak2_pairs,total_pairs,n_replicates,n_points_mean,hole_sd,peak1_r_sd,peak2_r_sd,peak1_g_sd,peak2_g_sd
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,a,cov10,26,50.01,1,26,50.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,a,cov20,31,60.01,1,31,60.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,i,cov10,26,50.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,i,cov20,31,60.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,14,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,8.0,1.0,14.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,14,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,8.0,1.0,14.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,16,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,9.0,1.0,16.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,16,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,9.0,1.0,16.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,21,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,19.0,1.0,21.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,21,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,19.0,1.0,21.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,i,cov10,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,i,cov20,6,10.01,1,,,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi0,0.0,10.0,3,3,"JA, no inhibitor",smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,231,uniform,9.945235158057054,12.75,2.838427947598253,78.0,nan,nan,nan,nan,0.0,3172.0,1.0,231.0,0.15840209551878243,0.46850160085105363,1.4258053440885357,0.24540980770730322,0.11099432224458504
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,128,uniform,10.51607142857143,13.25,2.5669642857142856,23.0,nan,nan,nan,nan,0.0,899.0,1.0,128.0,0.21903504679777072,0.43333112064297935,2.9553506785381822,0.3817358642184817,0.15840025110411196
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,229,uniform,9.917431749241658,12.75,2.4748923959827835,69.0,16.75,0.41050903119868637,23.25,1.4405504192646743,67.0,3099.0,1.0,229.0,0.16695321051339254,0.602697063208375,2.0154221718072485,0.24728445385644124,0.1047589378107251
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,136,uniform,10.774152611093092,15.25,1.9878997407087293,23.0,nan,nan,nan,nan,0.0,1069.0,1.0,136.0,0.24624066973311468,1.2594515076766695,2.9128683880487545,0.32082984267240366,0.15452177446087167
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,228,uniform,9.960454567743835,12.25,2.682563338301043,72.0,17.25,0.4168982768204558,23.25,1.6166281755196303,77.0,3079.0,1.0,228.0,0.06878833806013768,0.36328363574485434,0.7813706789196189,0.23769756377328766,0.1329086745637906
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,157,uniform,10.70948359073359,12.25,2.5019546520719316,32.0,nan,nan,nan,nan,0.0,1391.0,1.0,157.0,0.28727240341932586,0.5458683663919707,1.4342060918481094,0.3671196305962798,0.14194669498183848
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,61,uniform,15.85148,nan,nan,0.0,nan,nan,nan,nan,0.0,212.0,1.0,61.0,0.8514926677903997,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,61,uniform,14.7599,nan,nan,0.0,nan,nan,nan,nan,0.0,213.0,1.0,61.0,0.7274473645441859,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,61,uniform,16.37038626609442,nan,nan,0.0,nan,nan,nan,nan,0.0,215.0,1.0,61.0,0.7531342971803088,0.0,nan,0.4755247834228998,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,61,uniform,15.52,nan,nan,0.0,nan,nan,nan,nan,0.0,219.0,1.0,61.0,0.7186413549799654,0.0,nan,0.7525632306992175,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,56,uniform,14.6925,nan,nan,0.0,nan,nan,nan,nan,0.0,188.0,1.0,56.0,0.48792401100004607,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,56,uniform,14.6925,nan,nan,0.0,nan,nan,nan,nan,0.0,192.0,1.0,56.0,0.4781961100567257,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,36,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,71.0,1.0,36.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,36,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,72.0,1.0,36.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,35,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,35.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,35,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,35.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,34,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,34.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,34,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,34.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi12,12.0,10.0,3,3,arrests; Fig 1C irregular spots,smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,13,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,8.0,1.0,13.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,13,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,8.0,1.0,13.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,7,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,3.0,1.0,7.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,12,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,7.0,1.0,12.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,12,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,7.0,1.0,12.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,4.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,10,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,5.0,1.0,10.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,10,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,5.0,1.0,10.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,5,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,5.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,2,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,2.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,3.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,3.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,a,cov10,61,120.01,1,61,120.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,3.0,1.0,3.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,a,cov20,91,180.01,1,91,180.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,3.0,1.0,3.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,3.0,1.0,3.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,i,cov10,61,120.01,1,46,90.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,i,cov20,91,180.01,1,71,140.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,29,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,45.0,1.0,29.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,a,cov20,16,30.01,1,16,30.01,5.477225575051661,29,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,45.0,1.0,29.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,29,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,40.0,1.0,29.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,17,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,13.0,1.0,17.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,i,cov20,16,30.01,1,6,10.01,5.477225575051661,9,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,9.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,28,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,46.0,1.0,28.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,a,cov20,16,30.01,1,16,30.01,5.477225575051661,28,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,47.0,1.0,28.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,28,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,41.0,1.0,28.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,18,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,13.0,1.0,18.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,i,cov20,16,30.01,1,16,30.01,5.477225575051661,10,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,2.0,1.0,10.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,30,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,48.0,1.0,30.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,a,cov20,16,30.01,1,16,30.01,5.477225575051661,30,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,50.0,1.0,30.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,29,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,45.0,1.0,29.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,23,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,22.0,1.0,23.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,i,cov20,16,30.01,1,16,30.01,5.477225575051661,8,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,8.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,2,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,2.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,2,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,2.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi2.5,2.5,10.0,3,3,inside the Turing band,smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,36,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,36.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,32,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,71.0,1.0,32.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,32,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,55.0,1.0,32.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,1,lattice,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,36,lattice,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,78.0,1.0,36.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,36,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,77.0,1.0,36.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,35,lattice,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,35.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,35,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,70.0,1.0,35.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,33,lattice,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,60.0,1.0,33.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,33,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,61.0,1.0,33.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi20,20.0,10.0,3,3,"arrests, small domains",smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,103,uniform,7.1475,nan,nan,0.0,nan,nan,nan,nan,0.0,568.0,1.0,103.0,0.4797765584237826,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,103,uniform,7.1475,nan,nan,0.0,nan,nan,nan,nan,0.0,568.0,1.0,103.0,0.4797765584237826,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,116,uniform,11.339263009182952,nan,nan,0.0,nan,nan,nan,nan,0.0,681.0,1.0,116.0,0.13239572160604265,0.77138921583987,nan,0.14613954229928547,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,49,uniform,11.015,nan,nan,0.0,nan,nan,nan,nan,0.0,119.0,1.0,49.0,0.8640452698051541,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,49,uniform,11.015,nan,nan,0.0,nan,nan,nan,nan,0.0,119.0,1.0,49.0,0.8640452698051541,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,115,uniform,8.311255924170617,nan,nan,0.0,nan,nan,nan,nan,0.0,713.0,1.0,115.0,0.9200616719549605,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,115,uniform,8.311255924170617,nan,nan,0.0,nan,nan,nan,nan,0.0,713.0,1.0,115.0,0.9200616719549605,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,118,uniform,10.961275125628141,nan,nan,0.0,nan,nan,nan,nan,0.0,707.0,1.0,118.0,0.3427783983662557,1.14564392373896,nan,0.2980869437645577,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,52,uniform,9.5325,nan,nan,0.0,nan,nan,nan,nan,0.0,130.0,1.0,52.0,1.3849765486776695,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,52,uniform,9.5325,nan,nan,0.0,nan,nan,nan,nan,0.0,130.0,1.0,52.0,1.3849765486776695,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,104,uniform,6.527843137254902,nan,nan,0.0,nan,nan,nan,nan,0.0,561.0,1.0,104.0,0.774385235065555,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,104,uniform,6.527843137254902,nan,nan,0.0,nan,nan,nan,nan,0.0,561.0,1.0,104.0,0.774385235065555,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,124,uniform,10.367056603773586,nan,nan,0.0,nan,nan,nan,nan,0.0,791.0,1.0,124.0,0.3465120984620189,1.1200169060431566,nan,0.18213358971218757,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,44,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,99.0,1.0,44.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,44,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,99.0,1.0,44.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,37,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,57.0,1.0,37.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,37,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,57.0,1.0,37.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,82,uniform,10.325732860520095,nan,nan,0.0,nan,nan,nan,nan,0.0,312.0,1.0,82.0,0.8072870021766587,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,37,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,59.0,1.0,37.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,37,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,59.0,1.0,37.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,88,uniform,7.884365671641791,nan,nan,0.0,nan,nan,nan,nan,0.0,374.0,1.0,88.0,1.3185035346927299,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,46,uniform,6.915,nan,nan,0.0,nan,nan,nan,nan,0.0,105.0,1.0,46.0,1.3640980860840468,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,46,uniform,6.915,nan,nan,0.0,nan,nan,nan,nan,0.0,105.0,1.0,46.0,1.3640980860840468,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,84,uniform,4.05,nan,nan,0.0,nan,nan,nan,nan,0.0,342.0,1.0,84.0,2.429880341151126,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,a,cov10,96,190.01,1,96,190.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,a,cov20,136,270.01,1,136,270.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,12,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,8.0,1.0,12.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,i,cov10,96,190.01,1,66,130.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,i,cov20,136,270.01,1,96,190.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,33,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,62.0,1.0,33.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,a,cov20,21,40.01,1,21,40.01,5.477225575051661,34,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,67.0,1.0,34.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,35,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,59.0,1.0,35.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,19,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,18.0,1.0,19.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,i,cov20,21,40.01,1,16,30.01,5.477225575051661,9,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,9.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,32,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,58.0,1.0,32.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,a,cov20,21,40.01,1,21,40.01,5.477225575051661,33,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,61.0,1.0,33.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,35,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,65.0,1.0,35.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,19,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,13.0,1.0,19.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,i,cov20,21,40.01,1,16,30.01,5.477225575051661,10,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,2.0,1.0,10.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,32,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,56.0,1.0,32.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,a,cov20,21,40.01,1,21,40.01,5.477225575051661,34,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,65.0,1.0,34.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,34,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,62.0,1.0,34.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,26,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,32.0,1.0,26.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,i,cov20,21,40.01,1,16,30.01,5.477225575051661,7,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,7.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,76,uniform,6.354375,nan,nan,0.0,nan,nan,nan,nan,0.0,291.0,1.0,76.0,0.1586590873290047,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,76,uniform,6.354375,nan,nan,0.0,nan,nan,nan,nan,0.0,291.0,1.0,76.0,0.1586590873290047,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,109,uniform,9.078104838709677,nan,nan,0.0,nan,nan,nan,nan,0.0,585.0,1.0,109.0,1.296964506477317,0.12103072956898178,nan,0.17739661077171387,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,69,uniform,5.545,nan,nan,0.0,nan,nan,nan,nan,0.0,247.0,1.0,69.0,1.2813845723630986,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,69,uniform,5.545,nan,nan,0.0,nan,nan,nan,nan,0.0,247.0,1.0,69.0,1.2813845723630986,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,131,uniform,9.852315405651778,nan,nan,0.0,nan,nan,nan,nan,0.0,870.0,1.0,131.0,0.9607656466560551,0.7169618581776388,2.125212677738356,0.21769436296831515,0.221104670101702
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,76,uniform,5.5575,nan,nan,0.0,nan,nan,nan,nan,0.0,297.0,1.0,76.0,1.1110855457815785,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,76,uniform,5.5575,nan,nan,0.0,nan,nan,nan,nan,0.0,297.0,1.0,76.0,1.1110855457815785,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,118,uniform,10.115625,nan,nan,0.0,nan,nan,nan,nan,0.0,697.0,1.0,118.0,1.8183754683489652,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi3.2,3.2,10.0,3,3,"Turing band, near its edge",smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,252,uniform,6.54363749835764,nan,nan,0.0,nan,nan,nan,nan,0.0,3426.0,1.0,252.0,0.23879856230990326,0.4621688003316538,nan,0.1057219580479552,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,252,uniform,6.54363749835764,nan,nan,0.0,nan,nan,nan,nan,0.0,3426.0,1.0,252.0,0.23879856230990326,0.4621688003316538,nan,0.1057219580479552,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,276,uniform,9.868093922651934,11.75,3.338762214983713,123.0,17.25,0.21194605009633913,21.75,1.79867466077627,114.0,4207.0,1.0,276.0,0.11772535444842562,0.212367605815953,0.5866003750424985,0.2636342446208546,0.1464618631181905
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,248,uniform,6.67733888128895,nan,nan,0.0,nan,nan,nan,nan,0.0,3364.0,1.0,248.0,0.332352454074819,0.5000591680967694,2.1892691493473397,0.09739768520410921,0.05965631634729234
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,248,uniform,6.67733888128895,nan,nan,0.0,nan,nan,nan,nan,0.0,3364.0,1.0,248.0,0.332352454074819,0.5000591680967694,2.1892691493473397,0.09739768520410921,0.05965631634729234
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,274,uniform,10.01941389559725,11.75,3.673143465531009,138.0,17.25,0.1929384526336099,22.75,1.6699862111230275,109.0,4130.0,1.0,274.0,0.13788668318259326,0.21354156504062624,0.6679773574006832,0.25959473120959065,0.12296246976751143
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,245,uniform,6.829247397401703,nan,nan,0.0,nan,nan,nan,nan,0.0,3291.0,1.0,245.0,0.18747181484661946,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,245,uniform,6.829247397401703,nan,nan,0.0,nan,nan,nan,nan,0.0,3291.0,1.0,245.0,0.18747181484661946,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,278,uniform,9.85018828065172,11.75,3.1657355679702044,119.0,17.75,0.2569278766746192,24.25,1.470380319524954,104.0,4261.0,1.0,278.0,0.04093495442429043,0.3008217910989827,1.6081336231793675,0.25938024173271795,0.09563495832546957
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,3.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,3,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,3.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,326,uniform,6.662031989763276,nan,nan,0.0,nan,nan,nan,nan,0.0,6029.0,1.0,326.0,0.18918590573351426,0.8823423084299776,4.614101272789269,0.10889304324524918,0.07555023086224527
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,a,cov20,6,10.01,1,6,10.01,5.477225575051661,326,uniform,6.662031989763276,nan,nan,0.0,nan,nan,nan,nan,0.0,6029.0,1.0,326.0,0.18918590573351426,0.8823423084299776,4.614101272789269,0.10889304324524918,0.07555023086224527
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,322,uniform,9.118514563830052,10.75,3.025845765917209,144.0,15.25,0.34369629745352287,20.75,1.5089820359281436,126.0,5768.0,1.0,322.0,0.14730906195346577,0.22577643809751274,0.6295176488043099,0.2107565319540428,0.09983766006995635
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,346,uniform,6.633419141209143,10.25,1.6361886429258903,85.0,nan,nan,nan,nan,0.0,6846.0,1.0,346.0,0.16297418608266054,0.7195218094148574,1.7195485742394643,0.14389524078314203,0.055523774212355895
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,a,cov20,6,10.01,1,6,10.01,5.477225575051661,346,uniform,6.633419141209143,10.25,1.6361886429258903,85.0,nan,nan,nan,nan,0.0,6846.0,1.0,346.0,0.16297418608266054,0.7195218094148574,1.7195485742394643,0.14389524078314203,0.055523774212355895
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,335,uniform,8.946998339864487,10.25,3.172329103561195,155.0,14.75,0.2520385470719051,21.25,1.6108384894388736,151.0,6354.0,1.0,335.0,0.04383952248610592,0.25,0.6310903263400572,0.20795287086667694,0.10663641209854846
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,335,uniform,6.488859076061596,nan,nan,0.0,nan,nan,nan,nan,0.0,6329.0,1.0,335.0,0.0968399476046573,0.4955937602299932,2.6910472937483063,0.07751674914323202,0.06388047310793354
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,a,cov20,6,10.01,1,6,10.01,5.477225575051661,335,uniform,6.488859076061596,nan,nan,0.0,nan,nan,nan,nan,0.0,6329.0,1.0,335.0,0.0968399476046573,0.4955937602299932,2.6910472937483063,0.07751674914323202,0.06388047310793354
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,334,uniform,8.935072807804765,10.75,3.263681592039801,164.0,15.25,0.27298850574712646,19.75,1.5957446808510638,138.0,6286.0,1.0,334.0,0.057996309837685785,0.07870038119348596,0.5453439281774393,0.2467833672104885,0.12139764736209871
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,i,cov20,6,10.01,1,6,10.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed1,0,a,cov10,261,520.01,1,261,520.01,5.477225575051661,72,uniform,9.850833333333334,14.25,8.480565371024735,24.0,nan,nan,23.75,7.142857142857143,36.0,729.0,1.0,72.0,0.05625295392185056,0.5684463251143322,2.3686164837474486,1.3055162124009612,1.155496981839549
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,114,uniform,8.947083333333333,10.75,5.633802816901409,32.0,11.75,0.0,25.75,3.7795275590551185,48.0,1383.0,1.0,114.0,0.2578525044233319,0.7135781316716482,2.8445902604768936,0.9582298495821014,0.4952180305505437
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed1,0,i,cov10,261,520.01,1,146,290.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,a,cov10,26,50.01,1,26,50.01,5.477225575051661,43,uniform,9.49,nan,nan,0.0,nan,nan,nan,nan,0.0,128.0,1.0,43.0,0.3894713015768667,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,a,cov20,76,150.01,1,76,150.01,5.477225575051661,80,uniform,9.91125,nan,nan,0.0,nan,nan,nan,nan,0.0,465.0,1.0,80.0,0.40581591409183554,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,182,uniform,10.776937403364101,13.25,2.997737556561086,53.0,18.75,0.25951557093425603,24.75,1.777634130575307,55.0,1916.0,1.0,182.0,0.31004801736016574,0.4809310390026356,1.439630524499088,0.34503500443993657,0.19584150601686
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,i,cov10,26,50.01,1,6,10.01,5.477225575051661,18,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,16.0,1.0,18.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,i,cov20,76,150.01,1,21,40.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,a,cov10,26,50.01,1,26,50.01,5.477225575051661,41,uniform,8.8975,nan,nan,0.0,nan,nan,nan,nan,0.0,110.0,1.0,41.0,0.5508059442702522,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,a,cov20,76,150.01,1,76,150.01,5.477225575051661,86,uniform,10.1475,nan,nan,0.0,nan,nan,nan,nan,0.0,524.0,1.0,86.0,0.8000152625904939,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,191,uniform,10.758339638503573,12.25,3.322615219721329,62.0,17.75,0.19455252918287938,24.25,1.7527954064672104,58.0,2163.0,1.0,191.0,0.14362482709228813,0.35873911133301317,0.9234658642395289,0.32203741407661657,0.16022579518448773
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,i,cov10,26,50.01,1,6,10.01,5.477225575051661,19,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,14.0,1.0,19.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,i,cov20,76,150.01,1,21,40.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,4.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,a,cov10,26,50.01,1,26,50.01,5.477225575051661,39,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,92.0,1.0,39.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,a,cov20,76,150.01,1,76,150.01,5.477225575051661,82,uniform,8.55,nan,nan,0.0,nan,nan,nan,nan,0.0,431.0,1.0,82.0,0.6580110418314946,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,173,uniform,10.743571428571428,12.75,3.331197950032031,52.0,18.25,0.2779064381658175,24.75,1.849166062364032,51.0,1690.0,1.0,173.0,0.14237905392076486,0.3781451440915247,0.7304317709355956,0.3581512929851754,0.20554136181960048
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,i,cov10,26,50.01,1,6,10.01,5.477225575051661,25,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,33.0,1.0,25.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,i,cov20,76,150.01,1,21,40.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi5,5.0,10.0,3,3,replicating; Fig 1C regular spots,smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,263,uniform,6.5575308226854965,nan,nan,0.0,nan,nan,nan,nan,0.0,3937.0,1.0,263.0,0.24163089236409008,0.5444252859362422,4.375396807401842,0.06324969289497527,0.05858235692829431
+bi9,9.0,10.0,3,3,divides late,nucl,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,259,uniform,9.783274112195523,11.75,2.6638089406001226,87.0,17.75,0.3386243386243386,23.75,1.4379084967320261,88.0,3827.0,1.0,259.0,0.08520179533726661,0.41664583281247397,1.1461380986742562,0.20707283004052168,0.10602418833247904
+bi9,9.0,10.0,3,3,divides late,nucl,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,47,uniform,5.8975,nan,nan,0.0,nan,nan,nan,nan,0.0,102.0,1.0,47.0,1.7171012516427373,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,5,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,5.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,254,uniform,6.016716725842049,nan,nan,0.0,nan,nan,nan,nan,0.0,3673.0,1.0,254.0,0.2606234466541115,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,256,uniform,9.843320704413106,12.25,2.6947861745752784,92.0,17.25,0.44503782821539833,23.25,1.609038000684697,94.0,3742.0,1.0,256.0,0.07789988016736894,0.45259667475579185,0.7171925993492356,0.2074078106411692,0.13229682818586888
+bi9,9.0,10.0,3,3,divides late,nucl,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,36,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,72.0,1.0,36.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,1.0,1.0,4.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,244,uniform,6.284502772002773,nan,nan,0.0,nan,nan,nan,nan,0.0,3342.0,1.0,244.0,0.39761530537071416,0.2789374884252377,nan,0.12338969532340092,nan
+bi9,9.0,10.0,3,3,divides late,nucl,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,256,uniform,9.767358847350982,12.75,2.5985151342090234,91.0,16.75,0.38893690579083834,22.75,1.3951085084395451,81.0,3721.0,1.0,256.0,0.137106139965173,0.6326086863140593,0.9163256941599847,0.212533069100289,0.09480050342671108
+bi9,9.0,10.0,3,3,divides late,nucl,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,55,uniform,10.015,nan,nan,0.0,nan,nan,nan,nan,0.0,162.0,1.0,55.0,0.5981927279544645,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,nucl,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,1,a,cov10,6,10.01,1,6,10.01,5.477225575051661,278,uniform,6.774963074453141,nan,nan,0.0,nan,nan,nan,nan,0.0,4470.0,1.0,278.0,0.21056647129085163,0.35216994283875686,2.8030836382094866,0.11081369610617763,0.07630109409614592
+bi9,9.0,10.0,3,3,divides late,random,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,265,uniform,9.704455968688846,11.25,2.832438878950507,95.0,17.25,0.3941091059946069,22.25,1.4382402707275803,85.0,4065.0,1.0,265.0,0.08625899692761861,0.332264954516723,0.8345334750259195,0.2413240361438027,0.11299950662313434
+bi9,9.0,10.0,3,3,divides late,random,1,i,cov10,6,10.01,1,6,10.01,5.477225575051661,24,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,27.0,1.0,24.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,2,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,2.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,2,a,cov10,6,10.01,1,6,10.01,5.477225575051661,281,uniform,7.07285370982277,nan,nan,0.0,nan,nan,nan,nan,0.0,4637.0,1.0,281.0,0.1953429985556677,1.1010354401217248,4.103430172092553,0.12019862263207384,0.06437528917063226
+bi9,9.0,10.0,3,3,divides late,random,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,272,uniform,9.685536564257896,11.25,3.0565167243367934,106.0,15.25,0.32119914346895073,22.75,1.5885256014805675,103.0,4246.0,1.0,272.0,0.11583007722850817,0.258602010819715,0.49749371855331,0.2588588175212283,0.11708448537956048
+bi9,9.0,10.0,3,3,divides late,random,2,i,cov10,6,10.01,1,6,10.01,5.477225575051661,25,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,29.0,1.0,25.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,2,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,2.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,3,a,cov10,6,10.01,1,6,10.01,5.477225575051661,283,uniform,6.245451821115721,nan,nan,0.0,nan,nan,nan,nan,0.0,4688.0,1.0,283.0,0.4517688558657655,0.37157465431616843,2.5695195184227644,0.11330462985353329,0.09424140923033879
+bi9,9.0,10.0,3,3,divides late,random,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,272,uniform,9.690412621359224,11.25,2.8074115665356545,100.0,nan,nan,nan,nan,0.0,4281.0,1.0,272.0,0.15389584201196932,0.37080149676073315,1.360362348531304,0.22322241926476702,0.08327089485523487
+bi9,9.0,10.0,3,3,divides late,random,3,i,cov10,6,10.01,1,6,10.01,5.477225575051661,21,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,23.0,1.0,21.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,random,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,1,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,1.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,seed1,0,a,t600,301,600.01,1,301,600.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,6.0,1.0,4.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,seed1,0,i,t600,301,600.01,1,301,600.01,5.477225575051661,4,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,6.0,1.0,4.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,seed36,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,135,uniform,13.028,15.25,3.072870939420544,35.0,nan,nan,nan,nan,0.0,1065.0,1.0,135.0,0.6454056117879874,0.5594861602616148,2.0035617884071852,0.40891697561897095,0.1833683599010295
+bi9,9.0,10.0,3,3,divides late,seed36,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,132,uniform,13.084854857819906,16.25,2.7681660899653977,32.0,nan,nan,nan,nan,0.0,1026.0,1.0,132.0,0.20186260677510792,0.5600836991021967,2.64958759059825,0.3395782690042895,0.17201397366175902
+bi9,9.0,10.0,3,3,divides late,seed36,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,138,uniform,12.960112551159618,16.25,3.015484922575387,37.0,nan,nan,nan,nan,0.0,1092.0,1.0,138.0,1.446335946612266,0.4884581732871707,2.163578740156398,0.40986864435487624,0.15079555154838203
+bi9,9.0,10.0,3,3,divides late,seed36,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,133,uniform,12.929375,15.25,2.8284671532846715,31.0,nan,nan,nan,nan,0.0,1034.0,1.0,133.0,0.3885715923909419,0.48826222462934804,1.9691886392568814,0.39973830054359577,0.13598007977137652
+bi9,9.0,10.0,3,3,divides late,seed36,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,135,uniform,12.644410159031569,15.75,3.7521815008726,43.0,25.25,0.40068689181453926,32.75,1.750236518448439,37.0,1065.0,1.0,135.0,2.4989435156799464,0.4547793806805404,1.8663318373395503,0.48878153222517684,0.20759390207137787
+bi9,9.0,10.0,3,3,divides late,seed36,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,133,uniform,13.365326481257558,16.25,3.3442088091353996,41.0,22.25,0.27739251040221913,32.25,1.9333011116481391,40.0,1047.0,1.0,133.0,0.34931584103295316,0.7122104674883681,1.6735109880218333,0.41621500116100585,0.22667344790580773
+bi9,9.0,10.0,3,3,divides late,smallpert,1,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,smallpert,1,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,smallpert,2,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,smallpert,2,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,smallpert,3,a,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
+bi9,9.0,10.0,3,3,divides late,smallpert,3,i,t600,301,600.01,1,301,600.01,5.477225575051661,0,uniform,nan,nan,nan,0.0,nan,nan,nan,nan,0.0,0.0,1.0,0.0,nan,nan,nan,nan,nan
