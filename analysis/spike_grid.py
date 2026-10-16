@@ -122,12 +122,13 @@ def audit_cell(na, ni, N, gammas=GAMMA_19):
     growth = np.where(unstable, 0.5 * (TR + np.sqrt(np.maximum(TR ** 2 - 4 * DET, 0.0))), -np.inf)      # largest real part where unstable
     turing = stable & unstable[:, 1:].any(1)
     q_fast = np.where(turing, q[np.argmax(np.where(unstable, growth, -np.inf), axis=1)], np.nan)
+    sigma_max = np.where(turing, np.max(np.where(unstable, growth, -np.inf), axis=1), np.nan)      # largest linear growth rate over the unstable modes
     q_lo = np.full(len(ba), np.nan); q_hi = np.full(len(ba), np.nan)
     for r in np.nonzero(turing)[0]:
         m = np.nonzero(unstable[r, 1:])[0] + 1
         q_lo[r], q_hi[r] = q[m[0]], q[m[-1]]
     return dict(b_a=ba, b_i=bi, gamma=g, n_a=np.full(len(ba), na), n_i=np.full(len(ba), ni), truth_H=H, truth_a_star=a, truth_i_star=i,
-                n_roots=n_roots, trace0=tr, det0=det, truth_has_state=stable, turing=turing, q_fastest=q_fast,
+                n_roots=n_roots, trace0=tr, det0=det, truth_has_state=stable, turing=turing, q_fastest=q_fast, sigma_max=sigma_max,
                 wavelength_fastest=np.where(turing, 2 * np.pi / np.where(q_fast > 0, q_fast, np.nan), np.nan), q_unstable_min=q_lo, q_unstable_max=q_hi,
                 N_modes=np.full(len(ba), N))
 
@@ -413,7 +414,7 @@ def validate(n_target=2000, seed=0):
     import pandas as pd
     aud = load_audit(N_DEFAULT)
     rng = np.random.default_rng(seed)
-    per = max(1, n_target // (144 * 2))
+    per = max(1, int(round(n_target / (144 * 2))) + 2)      # per-cell cap per stratum; many cells hold fewer Turing sets than the cap
     picks = []
     for (na, ni), g in aud.groupby(["n_a", "n_i"]):
         t = g[g.turing]; s = g[g.truth_has_state & ~g.turing]
@@ -428,36 +429,68 @@ def validate(n_target=2000, seed=0):
             a0, i0 = tight_init(g.truth_a_star.values, g.truth_i_star.values, N_DEFAULT, frac=frac)
             A, I, S = integrate_batch(g.b_a.values, g.b_i.values, g.gamma.values, int(na), int(ni), N_DEFAULT, a0, i0)
             for k, (_, r) in enumerate(g.iterrows()):
-                rows.append(dict(b_a=r.b_a, b_i=r.b_i, gamma=r.gamma, n_a=int(na), n_i=int(ni), truth_a_star=r.truth_a_star, truth_has_state=bool(r.truth_has_state),
-                                 turing=bool(r.turing), frac=frac, step=int(S[k]), hit_cap=int(S[k] >= STEPS - 1), a_min=float(A[k].min()), a_max=float(A[k].max()),
+                rows.append(dict(b_a=r.b_a, b_i=r.b_i, gamma=r.gamma, n_a=int(na), n_i=int(ni), truth_a_star=r.truth_a_star, truth_i_star=r.truth_i_star, truth_has_state=bool(r.truth_has_state),
+                                 turing=bool(r.turing), sigma_max=float(r.sigma_max) if "sigma_max" in r else np.nan, frac=frac, step=int(S[k]), hit_cap=int(S[k] >= STEPS - 1),
+                                 a_min=float(A[k].min()), a_max=float(A[k].max()),
                                  a_mean=float(A[k].mean()), rel_amp=float((A[k].max() - A[k].min()) / r.truth_a_star), rel_mean=float(A[k].mean() / r.truth_a_star)))
     df = pd.DataFrame(rows)
-    df["outcome"] = np.where(df.rel_mean < 0.5, "collapsed", np.where(df.rel_amp > 0.05, "patterned", "uniform"))
+    df["outcome"] = outcome(df.rel_amp, df.rel_mean)
     df["agrees"] = np.where(df.turing, df.outcome == "patterned", df.outcome == "uniform")
-    # retest the disagreements at +-0.5 %
+    # retest every disagreement with the early-stopping rule disabled (the full 50,000 steps, t = 500), at +-5 % and at +-0.5 %:
+    # the stopping rule fires while a slowly growing mode is still small, which the first pass cannot distinguish from stability
     dis = df[~df.agrees]
     rows2 = []
     for (na, ni), g in dis.groupby(["n_a", "n_i"]):
-        a0, i0 = tight_init(g.truth_a_star.values, g.truth_i_star.values, N_DEFAULT, frac=0.005)
-        A, I, S = integrate_batch(g.b_a.values, g.b_i.values, g.gamma.values, int(na), int(ni), N_DEFAULT, a0, i0)
+        extra = {}
+        for frac, tag in ((0.05, "5"), (0.005, "05")):
+            a0, i0 = tight_init(g.truth_a_star.values, g.truth_i_star.values, N_DEFAULT, frac=frac)
+            A, I, S = integrate_batch(g.b_a.values, g.b_i.values, g.gamma.values, int(na), int(ni), N_DEFAULT, a0, i0, min_steps=STEPS)
+            extra[tag] = (A, S)
         for k, (idx, r) in enumerate(g.iterrows()):
-            rows2.append(dict(index=idx, step_005=int(S[k]), rel_amp_005=float((A[k].max() - A[k].min()) / r.truth_a_star), rel_mean_005=float(A[k].mean() / r.truth_a_star)))
+            A5, S5 = extra["5"]; A05, S05 = extra["05"]
+            rows2.append(dict(index=idx, rel_amp_full5=float((A5[k].max() - A5[k].min()) / r.truth_a_star), rel_mean_full5=float(A5[k].mean() / r.truth_a_star),
+                              rel_amp_full05=float((A05[k].max() - A05[k].min()) / r.truth_a_star), rel_mean_full05=float(A05[k].mean() / r.truth_a_star)))
+    cols = ["rel_amp_full5", "rel_mean_full5", "rel_amp_full05", "rel_mean_full05"]
     if rows2:
-        r2 = pd.DataFrame(rows2).set_index("index")
-        df = df.join(r2)
-        df["outcome_005"] = np.where(df.rel_mean_005 < 0.5, "collapsed", np.where(df.rel_amp_005 > 0.05, "patterned", "uniform"))
-        df["agrees_005"] = np.where(df.turing, df.outcome_005 == "patterned", df.outcome_005 == "uniform")
-        df["finite_amplitude_collapse"] = (~df.agrees) & (df.outcome == "collapsed") & (df.outcome_005 == "uniform")
+        df = df.join(pd.DataFrame(rows2).set_index("index"))
     else:
-        df["outcome_005"] = ""; df["agrees_005"] = np.nan; df["finite_amplitude_collapse"] = False
-    df["final_agrees"] = df.agrees | df.agrees_005.fillna(False).astype(bool)
+        for c in cols:
+            df[c] = np.nan
+    df["outcome_full5"] = np.where(df[cols[0]].notna(), outcome(df.rel_amp_full5, df.rel_mean_full5), "")
+    df["outcome_full05"] = np.where(df[cols[2]].notna(), outcome(df.rel_amp_full05, df.rel_mean_full05), "")
+    # classification of the disagreements after the retests
+    def verdict(r):
+        if r.agrees:
+            return "agrees"
+        if r.turing:
+            if r.outcome_full05 == "patterned" or r.outcome_full5 == "patterned":
+                return "agrees after full-length run (slow mode; stopping rule fired early)"
+            if r.outcome_full05 == "off" or r.outcome_full5 == "off":
+                return "Turing-unstable, fell to all-off (not patterned)"
+            return "Turing predicted, stayed uniform through t = 500 (expected amplification exp(sigma t) = %.2g)" % np.exp(r.sigma_max * 500) if np.isfinite(r.sigma_max) else "Turing predicted, stayed uniform"
+        if r.outcome_full05 == "uniform":
+            return "finite-amplitude collapse (+-5 % falls, +-0.5 % stays uniform)"
+        return "stable predicted, did not stay uniform at +-0.5 %"
+    df["verdict"] = df.apply(verdict, axis=1)
+    df["final_agrees"] = df.verdict.str.startswith("agrees")
     df.to_csv(SUMM / "spike_grid_validation.csv", index=False, lineterminator="\n")
-    by = df.groupby(["n_a", "n_i"]).agg(n=("agrees", "size"), n_turing=("turing", "sum"), disagree_005pct=("agrees", lambda x: int((~x).sum())),
-                                        disagree_after_retest=("final_agrees", lambda x: int((~x).sum())), finite_collapses=("finite_amplitude_collapse", "sum")).reset_index()
+    by = df.groupby(["n_a", "n_i"]).agg(n=("agrees", "size"), n_turing=("turing", "sum"), n_stable_nonturing=("turing", lambda x: int((~x).sum())),
+                                        disagree_first_pass=("agrees", lambda x: int((~x).sum())),
+                                        disagree_after_retest=("final_agrees", lambda x: int((~x).sum())),
+                                        turing_fell_to_off=("verdict", lambda x: int(x.str.startswith("Turing-unstable, fell").sum())),
+                                        finite_collapses=("verdict", lambda x: int(x.str.startswith("finite-amplitude").sum()))).reset_index()
+    by["disagreement_rate"] = by.disagree_after_retest / by.n
     by.to_csv(SUMM / "spike_grid_validation_by_hill.csv", index=False, lineterminator="\n")
-    print(f"validation: {len(df)} sets, disagreements at +-5 %: {int((~df.agrees).sum())}, after the +-0.5 % retest: {int((~df.final_agrees).sum())}, "
-          f"finite-amplitude collapses: {int(df.finite_amplitude_collapse.sum())}")
+    print(f"validation: {len(df)} sets ({int(df.turing.sum())} Turing, {int((~df.turing).sum())} stable non-Turing); disagreements at the first pass: {int((~df.agrees).sum())}; "
+          f"after the full-length retests: {int((~df.final_agrees).sum())}")
+    print(df.verdict.value_counts().to_string())
     return df
+
+
+def outcome(rel_amp, rel_mean):
+    """patterned: activator range > 5 % of a*; off: range small and mean below a* / 2; uniform otherwise."""
+    rel_amp = np.asarray(rel_amp, float); rel_mean = np.asarray(rel_mean, float)
+    return np.where(rel_amp > 0.05, "patterned", np.where(rel_mean < 0.5, "off", "uniform"))
 
 
 def spike2():
