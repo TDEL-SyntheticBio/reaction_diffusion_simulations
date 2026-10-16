@@ -12,10 +12,10 @@ Neumann Laplacian with prefactor 1, inhibitor range sqrt(D_i / gamma) = 10, 7.07
 | `analysis/spike_grid.py` | driver: audit, bit-exact integrator replica, labelling, validation, spike-2 subsample, aggregation |
 | `analysis/summaries/state_audit_turing.csv` | 273,600 sets: `truth_has_state`, `truth_a_star`, `truth_i_star`, `truth_H`, `n_roots`, `trace0`, `det0`, `turing`, `q_fastest`, `sigma_max`, `wavelength_fastest`, `q_unstable_min/max`, `N_modes` (= 200) |
 | `analysis/summaries/spike_grid_full.csv` | one row per set: parameters, `step_returned` (the engine's loop index at the stop), `steps_used` (= step + 1 Euler steps), `hit_cap`, `label`, `n_domains`, `largest_domain`, `cells_above`, `fwhm`, `domain_start`, `a_min/a_max/a_mean`, `i_mean/i_max`, `dom_lambda`, `score`, `amp_sd`, `pattern_flag`, the audit columns, `lambda_i` and the sizes divided by it |
-| `analysis/summaries/spike_grid_by_hill.csv` | per (n_a, n_i): counts of the four outcomes, capped runs, audit counts (`n_truth_has_state`, `n_turing`), `pattern_flag` count, one-domain size median / quartiles / max in cells and in lambda_i, the > 150-cell and <= 5-cell counts, and the cross-counts between labels and the audit |
+| `analysis/summaries/spike_grid_by_hill.csv` | per (n_a, n_i): counts of the four outcomes, capped runs, audit counts (`n_truth_has_state`, `n_turing`), `pattern_flag` count, one-domain size median / quartiles / max in cells and median / quartiles in lambda_i, the > 150-cell and <= 5-cell counts, and the cross-counts between labels and the audit |
 | `analysis/summaries/spike_grid_validation.csv`, `spike_grid_validation_by_hill.csv` | the random_tight validation sample and its per-cell disagreement rates |
 | `analysis/summaries/spike_height_2.csv` | the spike = 2.0 subsample |
-| `results/spike_grid/full/cell_na??_ni??.{npz,csv}` | per-cell checkpoints (gitignored): final activator and inhibitor profiles of every set as float32 (`a_final`, `i_final`, 1,900 x 200 each), the stop step, and the per-set measurement rows. 165 MB compressed for 144 cells. Regenerate with `python analysis/spike_grid.py run 4` (1.6 h on 4 cores; finished cells are skipped) and `python analysis/spike_grid.py aggregate`. |
+| `results/spike_grid/full/cell_na??_ni??.{npz,csv}` | per-cell checkpoints (gitignored): final activator and inhibitor profiles of every set as float32 (`a_final`, `i_final`, 1,900 x 200 each), the stop step, and the per-set measurement rows. 115 MB of compressed npz plus 57 MB of per-cell CSV for 144 cells (165 MiB on disk). Regenerate with `python analysis/spike_grid.py run 4` (1.6 h on 4 cores; finished cells are skipped) and `python analysis/spike_grid.py aggregate`. |
 
 ## Conventions
 
@@ -90,6 +90,11 @@ Neumann Laplacian with prefactor 1, inhibitor range sqrt(D_i / gamma) = 10, 7.07
 
 ## Caveats to carry
 
+- In cell n_a = n_i = 1 ten sets have truth_a_star equal to 0.3 b_a to 1e-15, so their uniform activated state sits exactly on
+  the segmentation level; the 1 one-domain and 7 multiple-domain labels in that cell (and two of its all-on / all-off labels)
+  are decided by residuals below 1e-4 of a field that is uniform to that precision. They reproduce from the float64 engine but
+  are not domains in any physical sense.
+
 - **Boundary truncation is not cleared at N = 200.** Of the 24,298 one-domain sets, 590 have a domain above 150 cells
   (maximum 189; 989 are >= 100 cells; 399 are 101-150). At the measured cell the largest one-domain size is 188 at N = 200
   versus 94 at N = 100: the same sets reach the box again. By gamma: 106 of the 1,019 one-domain sets at gamma 0.1 exceed
@@ -102,26 +107,26 @@ Neumann Laplacian with prefactor 1, inhibitor range sqrt(D_i / gamma) = 10, 7.07
 - Size in units of the 1D inhibitor range sqrt(D_i / gamma): one-domain median 1.22 lambda_i (quartiles 0.73-2.2); by gamma the
   median rises from 0.7-0.9 lambda_i at gamma 0.1-0.3 to 1.58 at gamma 1 and 5.0 at gamma 10, where lambda_i is 1 cell and the
   floor dominates.
-- 2,811 "all off" sets hit the step cap with a sub-threshold activator still evolving (a_max between 0.3 and 1.0 of the 0.3 b_a
-  level, median 0.65); 1,637 of them are Turing sets and they sit at n_a 2-5 (1,409 / 1,015 / 343 / 44). "All off" there means
+- 2,811 "all off" sets hit the step cap with a sub-threshold activator still evolving (a_max between 0.12 and 1.0 of the 0.3 b_a
+  level, median 0.65; 267 of them below 0.3); 1,637 of them are Turing sets and they sit at n_a 2-5 (1,409 / 1,015 / 343 / 44). "All off" there means
   below the 0.3 b_a level, not zero.
 
 ## Validation sample (random_tight around truth_a_star)
 
 Sample: per (n_a, n_i) cell, up to 9 Turing sets and up to 9 stable non-Turing sets drawn at random (seed 0) from the audit:
-2,225 sets (929 Turing, 1,296 stable non-Turing; every cell holds 10-18). Protocol: the engine's random_tight draw (seed 2,
+2,225 sets (929 Turing, 1,296 stable non-Turing; every cell holds 9-18: the 29 cells with no Turing set in the audit, all of n_a = 1 and 17 cells at low n_i, hold only their 9 stable picks). Protocol: the engine's random_tight draw (seed 2,
 the same uniform stream for every set) scaled to +-5 % of (truth_a_star, truth_i_star) in both fields, N = 200, the run
 settings above (stopping rule on). Outcome from the final activator relative to a*: "patterned" if max - min > 0.05 a*,
 "off" if the range is smaller and the mean is below a* / 2, "uniform" otherwise. Agreement: Turing sets should be patterned,
 stable non-Turing sets uniform. Every first-pass disagreement was rerun for the full 50,000 steps (t = 500, stopping rule off)
 at +-5 % and at +-0.5 %.
 
-- Stable non-Turing sets: 1,296 of 1,296 stayed uniform at +-5 % (mean within 1e-5 of a*). **No finite-amplitude collapse
+- Stable non-Turing sets: 1,296 of 1,296 stayed uniform at +-5 % (range below 0.03 a*; mean within 3.1e-5 of a*, 8 beyond 1e-5, all at n_a = 1). **No finite-amplitude collapse
   occurred in this sample** (the measured cell's 2 of 1,494 did not recur here).
 - Turing sets: 929; first-pass disagreements 34. Eleven were slow modes (sigma_max 0.002-0.010) at which the stopping rule
-  fired at step 1,600-25,400 with the amplitude at 0.03-0.05 a* (one at 4e-4 a*); on the full-length run they are patterned,
-  so they agree. Twenty-two are Turing-unstable states that fell to the all-off state (activator ~1e-190 at t = 500 from both
-  +-5 % and +-0.5 %): all at b_a = 2 (one at b_a = 3), a* = 1.3-2.6, spread over the cells n_a 6-12 listed below. The linear
+  fired at step 1,600-25,400 with the amplitude at 0.025-0.050 a* (one at 4e-4 a*); on the full-length run they are patterned,
+  so they agree. Twenty-two are Turing-unstable states that fell to the all-off state (activator mean / a* at t = 500 between 1e-205 and 3e-160 from +-5 %
+  and between 7e-201 and 3e-93 from +-0.5 %): all at b_a = 2 (one at b_a = 3), a* = 1.3-2.6, spread over the cells n_a 6-12 listed below. The linear
   call "unstable" holds for them; the outcome is not a pattern. One set (n_a 3, n_i 10, b_a 8, b_i 6, gamma 0.7, sigma_max =
   0.0020) stayed uniform through t = 500 at both amplitudes; its expected amplification over the run is exp(sigma t) = 2.7,
   so the run is too short to decide it.
