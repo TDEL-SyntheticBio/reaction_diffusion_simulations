@@ -1,0 +1,57 @@
+A,B,w,promoter,n_a,n_i,threshold,b_i_used,note,kick
+membrane,intra,0.0,separate,2,2,,1.1739356879801355,no ignition up to 100,100.0
+intra,membrane,0.0,separate,2,2,,1.1739356879801355,no ignition up to 100,100.0
+membrane,membrane,0.25,shared,2,2,,1.1739356879801355,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,2,2,13.823722273578994,1.1739356879801355,,20.73558341036849
+membrane,diffusible,1.0,shared,2,2,6.264335366568856,1.1739356879801355,,9.396503049853283
+diffusible,diffusible,1.0,shared,2,2,30.505278902670256,1.1739356879801355,,45.75791835400538
+diffusible,membrane,1.0,shared,2,2,,1.1739356879801355,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,2,2,,1.1739356879801355,no ignition up to 100,100.0
+membrane,intra,0.0,separate,2,4,,1.4849228921114284,no ignition up to 100,100.0
+intra,membrane,0.0,separate,2,4,,1.4849228921114284,no ignition up to 100,100.0
+membrane,membrane,0.25,shared,2,4,,1.4849228921114284,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,2,4,12.863969449369744,1.4849228921114284,,19.295954174054614
+membrane,diffusible,1.0,shared,2,4,6.264335366568856,1.4849228921114284,,9.396503049853283
+diffusible,diffusible,1.0,shared,2,4,29.42727176209282,1.4849228921114284,,44.14090764313923
+diffusible,membrane,1.0,shared,2,4,,1.4849228921114284,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,2,4,,1.4849228921114284,no ignition up to 100,100.0
+membrane,intra,0.0,separate,2,10,,1.9512256412193527,no ignition up to 100,100.0
+intra,membrane,0.0,separate,2,10,,1.9512256412193527,no ignition up to 100,100.0
+membrane,membrane,0.25,shared,2,10,,1.9512256412193527,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,2,10,,1.9512256412193527,no ignition up to 100,100.0
+membrane,diffusible,1.0,shared,2,10,6.264335366568856,1.9512256412193527,,9.396503049853283
+diffusible,diffusible,1.0,shared,2,10,29.42727176209282,1.9512256412193527,,44.14090764313923
+diffusible,membrane,1.0,shared,2,10,,1.9512256412193527,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,2,10,,1.9512256412193527,no ignition up to 100,100.0
+membrane,intra,0.0,separate,4,2,,1.4335433947496439,no ignition up to 100,100.0
+intra,membrane,0.0,separate,4,2,,1.4335433947496439,no ignition up to 100,100.0
+membrane,membrane,0.25,shared,4,2,,1.4335433947496439,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,4,2,,1.4335433947496439,no ignition up to 100,100.0
+membrane,diffusible,1.0,shared,4,2,8.976871324473143,1.4335433947496439,,13.465306986709713
+diffusible,diffusible,1.0,shared,4,2,58.294153471360744,1.4335433947496439,,87.44123020704112
+diffusible,membrane,1.0,shared,4,2,,1.4335433947496439,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,4,2,,1.4335433947496439,no ignition up to 100,100.0
+membrane,intra,0.0,separate,4,10,1.0,1.09093817581708,ignites at 1,1.5
+intra,membrane,0.0,separate,4,10,1.0,1.09093817581708,ignites at 1,1.5
+membrane,membrane,0.25,shared,4,10,,1.09093817581708,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,4,10,11.139738599948023,1.09093817581708,,16.709607899922034
+membrane,diffusible,1.0,shared,4,10,8.659643233600654,1.09093817581708,,12.989464850400982
+diffusible,diffusible,1.0,shared,4,10,52.32991146814947,1.09093817581708,,78.4948672022242
+diffusible,membrane,1.0,shared,4,10,,1.09093817581708,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,4,10,,1.09093817581708,no ignition up to 100,100.0
+membrane,intra,0.0,separate,10,2,,18.838936064563338,no ignition up to 100,100.0
+intra,membrane,0.0,separate,10,2,,18.838936064563338,no ignition up to 100,100.0
+membrane,membrane,0.25,shared,10,2,,9.414004020544775,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,10,2,,18.838936064563338,no ignition up to 100,100.0
+membrane,diffusible,1.0,shared,10,2,10.0,18.838936064563338,,15.0
+diffusible,diffusible,1.0,shared,10,2,,18.838936064563338,no ignition up to 100,100.0
+diffusible,membrane,1.0,shared,10,2,,18.838936064563338,no ignition up to 100,100.0
+intra,diffusible,1.0,shared,10,2,,18.838936064563338,no ignition up to 100,100.0
+membrane,intra,0.0,separate,10,10,1.0,0.9643723433872416,ignites at 1,1.5
+intra,membrane,0.0,separate,10,10,1.0,0.9643723433872416,ignites at 1,1.5
+membrane,membrane,0.25,shared,10,10,,0.9643723433872416,no ignition up to 100,100.0
+membrane,membrane,1.0,shared,10,10,7.498942093324559,0.9643723433872416,,11.24841313998684
+membrane,diffusible,1.0,shared,10,10,7.498942093324559,0.9643723433872416,,11.24841313998684
+diffusible,diffusible,1.0,shared,10,10,43.7144481261109,0.9643723433872416,,65.57167218916635
+diffusible,membrane,1.0,shared,10,10,80.58421877614818,0.9643723433872416,,100.0
+intra,diffusible,1.0,shared,10,10,,0.9643723433872416,no ignition up to 100,100.0
