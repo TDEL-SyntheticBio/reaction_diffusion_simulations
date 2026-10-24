@@ -503,6 +503,105 @@ def start_name(st):
     return {"noise": "noise around uniform state", "seeds": "scattered seeds", "nuc001": "nucleation 0.001"}[st]
 
 
+# ------------------------------------------------------------------ extension: more Hill pairs, key circuits only
+EXT_HILL = [(2, 2), (2, 4), (2, 10), (4, 2), (4, 10), (10, 2), (10, 10)]     # 4/4 and 10/4 are in the main screen
+EXT_CFG = [("membrane", "intra", 0.0, "separate"),      # LI
+           ("intra", "membrane", 0.0, "separate"),      # LI with the contact step on the inhibition side
+           ("membrane", "membrane", 0.25, "shared"),    # JAJI, weak self-activation
+           ("membrane", "membrane", 1.0, "shared"),     # JAJI
+           ("membrane", "diffusible", 1.0, "shared"),   # JAPI
+           ("diffusible", "diffusible", 1.0, "shared"), # PAPI
+           ("diffusible", "membrane", 1.0, "shared"),   # PAJI
+           ("intra", "diffusible", 1.0, "shared")]      # single-morphogen RD
+EXT_NAME = ["LI (w 0)", "A intra / B membrane (w 0)", "JAJI (w 0.25)", "JAJI (w 1)", "JAPI (w 1)", "PAPI (w 1)", "PAJI (w 1)",
+            "single-morphogen RD (w 1)"]
+EXT_OUT = OUT / "ext"
+
+
+def ext_configs():
+    return [(A, B, w, p, na, ni) for (na, ni) in EXT_HILL for (A, B, w, p) in EXT_CFG]
+
+
+def ext_jobs(rep=0):
+    jobs = []
+    for (na, ni) in EXT_HILL:
+        for (A, B, w, p) in EXT_CFG:
+            pts, _, _ = positions(w, p, na, ni)
+            for kind, f, bi in pts:
+                for st in STARTS:
+                    jobs.append((A, B, w, p, na, ni, kind, f, bi, st, rep))
+    return jobs
+
+
+def cmd_ext_thresholds(workers):
+    from multiprocessing import Pool
+    f = EXT_OUT / "thresholds.json"
+    if f.exists():
+        print("extension thresholds already computed:", f); return
+    EXT_OUT.mkdir(parents=True, exist_ok=True); t0 = time.time()
+    with Pool(workers) as p:
+        rows = p.map(_thr_job, ext_configs(), chunksize=1)
+    f.write_text(json.dumps(rows, indent=1)); print(f"{len(rows)} extension thresholds in {time.time() - t0:.0f} s -> {f}", flush=True)
+
+
+def cmd_ext_run(workers):
+    from multiprocessing import Pool
+    rows = json.loads((EXT_OUT / "thresholds.json").read_text())
+    K = {(r["A"], r["B"], r["w"], r["promoter"], r["n_a"], r["n_i"]): r["kick"] for r in rows}
+    jobs = ext_jobs()
+    todo = [(j, K[j[:6]], N_DEFAULT, EXT_OUT) for j in jobs if not (EXT_OUT / "rows" / f"{job_name(j)}.json").exists()]
+    print(f"ext: {len(jobs)} jobs, {len(todo)} to run, N = {N_DEFAULT}, {workers} workers", flush=True)
+    t0 = time.time()
+    with Pool(workers) as p:
+        for k, r in enumerate(p.imap_unordered(_run_job, todo, chunksize=1), 1):
+            if k % 50 == 0 or k == len(todo):
+                el = time.time() - t0
+                print(f"  {k}/{len(todo)}  {el/3600:.2f} h elapsed, about {el/k*(len(todo)-k)/3600:.2f} h left", flush=True)
+
+
+def cmd_ext_aggregate():
+    import pandas as pd
+    rows = [json.loads(f.read_text()) for f in sorted((EXT_OUT / "rows").glob("*.json"))]
+    if rows:
+        dest = ROOT / "analysis" / "summaries" / "archscreen_ext_runs.csv"; pd.DataFrame(rows).to_csv(dest, index=False)
+        print(f"{len(rows)} rows -> {dest}")
+    if (EXT_OUT / "thresholds.json").exists():
+        pd.DataFrame(json.loads((EXT_OUT / "thresholds.json").read_text())).to_csv(
+            ROOT / "analysis" / "summaries" / "archscreen_ext_thresholds.csv", index=False)
+    edges = [dict(n_a=na, n_i=ni, A=A, B=B, w=w, promoter=p, edge=edge(w, p, na, ni), ref_edge=ref_edge(na, ni))
+             for (na, ni) in EXT_HILL for (A, B, w, p) in EXT_CFG]
+    pd.DataFrame(edges).to_csv(ROOT / "analysis" / "summaries" / "archscreen_ext_edges.csv", index=False)
+
+
+def cmd_ext_sheets():
+    """One PNG per (Hill pair, start, time): rows = the six reference positions, columns = the eight key circuits."""
+    import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    dest = ROOT / "analysis" / "summaries" / "archscreen_ext_sheets"; dest.mkdir(parents=True, exist_ok=True)
+    for (na, ni) in EXT_HILL:
+        E = ref_edge(na, ni)
+        for st in STARTS:
+            for tkey in ("t50", "day4"):
+                fig, axs = plt.subplots(len(FRACS), len(EXT_CFG), figsize=(17, 2.1 * len(FRACS) + 0.8), squeeze=False)
+                for r, f in enumerate(FRACS):
+                    for c, (A, B, w, p) in enumerate(EXT_CFG):
+                        ax = axs[r, c]; ax.set_xticks([]); ax.set_yticks([])
+                        nm = job_name((A, B, w, p, na, ni, "ref", f, f * E, st, 0))
+                        fp = EXT_OUT / "frames" / f"{nm}.npz"; rp = EXT_OUT / "rows" / f"{nm}.json"
+                        if not fp.exists():
+                            ax.set_facecolor("#eeeeee"); ax.set_title("missing", fontsize=6); continue
+                        z = np.load(fp); row = json.loads(rp.read_text())
+                        ax.imshow(hex_raster(z[tkey].astype(float)), cmap="Greens", vmin=0, vmax=BA, aspect=np.sqrt(3), interpolation="nearest")
+                        mi = row["moran_" + tkey]
+                        ax.set_title(f"{row['label_' + tkey]}\nI {mi:.2f}" if mi == mi else row["label_" + tkey], fontsize=6)
+                        if r == 0: ax.text(0.5, 1.45, EXT_NAME[c], transform=ax.transAxes, ha="center", fontsize=7.5, weight="bold")
+                        if c == 0: ax.set_ylabel(f"{f:g}x edge\nb_i {f * E:.3g}", fontsize=7)
+                fig.suptitle(f"Architecture screen extension, n {na}/{ni}, start {start_name(st)}, {'t = 50' if tkey == 't50' else 'day 4'}; "
+                             f"b_i as multiples of the shared w = 1 edge ({E:.3g}); colour 0..b_a; title: label, Moran's I", fontsize=9)
+                fig.tight_layout(rect=[0, 0, 1, 0.97])
+                fig.savefig(dest / f"{tkey}_na{na}_ni{ni}_{st}.png", dpi=80, facecolor="white"); plt.close(fig)
+    print("extension sheets ->", dest)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "help"
     workers = int(sys.argv[2]) if len(sys.argv) > 2 else (os.cpu_count() or 2)
@@ -518,7 +617,18 @@ if __name__ == "__main__":
         cmd_aggregate()
     elif cmd == "sheets":
         cmd_sheets()
+    elif cmd == "ext_thresholds":
+        cmd_ext_thresholds(workers)
+    elif cmd == "ext_run":
+        cmd_ext_run(workers)
+    elif cmd == "ext_aggregate":
+        cmd_ext_aggregate()
+    elif cmd == "ext_sheets":
+        cmd_ext_sheets()
+    elif cmd == "ext_count":
+        print("extension configs", len(ext_configs()), "jobs", len(ext_jobs()))
     elif cmd == "count":
         print("configs", len(CONFIGS), "main jobs", len(all_jobs()), "check200 jobs", len(check_jobs()))
     else:
-        print("usage: archscreen.py check | thresholds [w] | run [w] | check200 [w] | aggregate | sheets | count")
+        print("usage: archscreen.py check | thresholds [w] | run [w] | check200 [w] | aggregate | sheets | count | "
+              "ext_thresholds [w] | ext_run [w] | ext_aggregate | ext_sheets | ext_count")
